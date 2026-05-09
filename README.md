@@ -1,2 +1,9 @@
-# tasan-media-agents
-AI-powered content system for tasan-media (YouTube) using Claude agents – trends, research, scripting, and publishing workflows.
+# Tasan Media – AI Content System
+
+This project powers the YouTube channel "tasan-media".
+
+Goal:
+Build a scalable, high-quality content workflow using Claude agents.
+
+Website:
+https://tasan.ch
