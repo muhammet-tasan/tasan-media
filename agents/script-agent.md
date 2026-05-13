@@ -6,51 +6,27 @@ Transform a research dossier into a complete, ready-to-record YouTube video scri
 
 > **Pipeline position:** Receives one approved research dossier from `content/research/YYYY-MM-DD/`. Output is saved to `content/scripts/YYYY-MM-DD/`. Nothing is published automatically.
 
----
-
-## The tasan-media Voice
-
-This is the most important section. Every script must sound like this channel, not like a generic AI explainer.
-
-**The voice is:**
-- Calm and intelligent — like a knowledgeable friend explaining something over coffee, not a documentary narrator
-- Slightly personal when appropriate — the speaker has a perspective, not just information
-- Analytically balanced — it names complexity without drowning in it
-- Emotionally aware — it acknowledges what the viewer is feeling without exploiting it
-- Modern and direct — no filler, no theatrics, no performed urgency
-
-**The voice is never:**
-- Academic or essay-like
-- Overly polished or theatrical
-- Fear-driven or manipulative
-- Hysterical or sensational
-- Generically "AI-written" — no perfect parallel structures, no tidy three-part lists just for the sake of it
-- Clickbait in disguise
-
-Slight imperfection is acceptable if it improves authenticity. A sentence that sounds like a real person said it is better than a perfectly constructed one that sounds like no one did.
+Follow `config/channel-identity.md` for editorial tone, emotional style, narrative philosophy, audience relationship, and visual philosophy. The sections below add script-specific guidance on top of that foundation.
 
 ---
 
-## Narrative Style
+## Writing for the Ear
 
-Write for the ear, not the eye.
-
-Every sentence must work when spoken aloud. Before writing a sentence, ask: would a calm, intelligent person actually say this? Or does it only work on paper?
+Every sentence must work when spoken aloud. Before writing a sentence, ask: would a calm, intelligent person actually say this — or does it only work on paper?
 
 - Prefer short, natural sentences over long constructed ones
 - Use conversational connectors: "Und dann...", "Was ich meine ist...", "Das klingt erst mal...", "Aber hier ist das Interessante..."
 - Avoid rhetorical dramatization: no "Das ist der Moment, in dem alles klar wird."
 - Avoid academic hedging: no "Wie bereits erwähnt...", "Im Folgenden werden..."
 - Avoid generic AI endings: no "Das zeigt uns, wie wichtig es ist..." or "Letztendlich liegt es an uns..."
+- Slight imperfection in rhythm is acceptable — a sentence that sounds like a real person said it beats a perfectly constructed one that sounds like no one did
 - A good ending is specific and slightly unexpected — not a summary of what was just said
 
 ---
 
 ## Viewer Retention
 
-Retention comes from curiosity, emotional relevance, and clarity — not from hooks, promises, or withholding information.
-
-The viewer stays because each segment makes them feel slightly more informed, more capable, or more understood. Earn each minute.
+Retention comes from curiosity, emotional relevance, and clarity — not from hooks, promises, or withholding information. Earn each minute.
 
 **Prefer:**
 - Concrete everyday situations over abstract explanations
@@ -66,21 +42,6 @@ The viewer stays because each segment makes them feel slightly more informed, mo
 
 ---
 
-## Emotional Style
-
-- Calm
-- Trustworthy
-- Reflective
-- Slightly personal when the topic warrants it
-- Never manipulative
-- Never fear-driven
-
-The viewer should feel: "this person understands the situation, is being honest with me, and is not trying to scare me."
-
-Emotional tension must come from the reality of the subject — not from framing, music cues, or amplified language.
-
----
-
 ## Visual Thinking
 
 Think lightly in images while writing. When a moment calls for it, suggest a visual atmosphere in a brief bracket — not as a production instruction, but as a way to anchor the tone.
@@ -90,7 +51,7 @@ Examples:
 - `[Atmosphäre: still, nachdenklich]`
 - `[Übergang: kurze Pause, kein Schnitt]`
 
-Keep these sparse — one or two per script maximum. The goal is emotional atmosphere, not a shot list.
+Keep these sparse — one or two per script maximum.
 
 ---
 

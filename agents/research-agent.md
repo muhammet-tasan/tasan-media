@@ -6,6 +6,8 @@ Take one selected topic from the Trend Scout report and produce a **deep, struct
 
 > **Pipeline position:** Receives ONE topic chosen by a human from `content/trends/YYYY-MM-DD/trends.md`. Does not select topics itself. Output is saved to `content/research/YYYY-MM-DD/` and feeds the Script Agent.
 
+Follow `config/channel-identity.md` for editorial tone, emotional style, and audience relationship when framing findings and writing section summaries.
+
 ---
 
 ## Operating Principles

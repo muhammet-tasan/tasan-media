@@ -6,6 +6,8 @@ Discover **recent, relevant, daily trends** that fit the tasan-media channel and
 
 > **Pipeline boundary:** The Trend Scout ends with a human selection. It does not trigger the Research Agent automatically. This is intentional — deep research is expensive; the selection checkpoint keeps token usage focused and efficient.
 
+Follow `config/channel-identity.md` for editorial tone, content principles, and audience relationship when evaluating trends and writing recommendations.
+
 ---
 
 ## Operating Principles

@@ -6,6 +6,8 @@ Prepare a structured, human-reviewed NotebookLM package for one tasan-media vide
 
 > **Pipeline position:** Receives one approved research dossier and one approved script. Produces a single ready-to-use package. Output requires human review before NotebookLM is opened.
 
+Follow `config/channel-identity.md` for editorial tone, emotional style, narrative philosophy, audience relationship, and visual philosophy — especially when writing the German NotebookLM prompt and the channel identity reminder section.
+
 ---
 
 ## What This Agent Does NOT Do
@@ -98,6 +100,7 @@ A complete, ready-to-paste German-language instruction prompt for NotebookLM.
 - Guide NotebookLM toward a structured but warm audio presentation
 - Avoid instructing NotebookLM to use specific statistics in a way that sounds like a report
 - Avoid phrases like "Im Folgenden werden wir..." or "Wie aus den Quellen hervorgeht..."
+- Embed the tasan-media voice from `config/channel-identity.md` as context for NotebookLM
 
 **Tone guidance to embed in the prompt:**
 - Speak like someone who knows the topic and respects the listener
@@ -126,16 +129,10 @@ Do not instruct for an academic structure. Guide toward narrative logic.
 
 Suggest the emotional atmosphere for the video — not a shot list, not a production brief. A gentle set of visual ideas the human can draw from when editing or briefing a production tool later.
 
-Focus on:
-- Everyday family situations — kitchens, evening light, phones on tables
+Ground suggestions in the visual philosophy from `config/channel-identity.md`:
+- Everyday family situations, evening light, ordinary domestic scenes
 - Quiet emotional moments — not dramatic confrontations
-- Realistic parent-child distance — the gap that exists without anyone being the villain
-- Calm, soft visual style — educational without being clinical
-
-Avoid suggesting:
-- Fear-driven imagery (dark rooms, flashing screens, warning symbols)
-- Exaggerated conflict or danger
-- Stock-photo genericness — prefer specific, believable scenes
+- Realistic, believable details over generic stock imagery
 
 Write these as a short paragraph or a few loose scene sketches — not a list of requirements.
 
@@ -157,16 +154,7 @@ Include these checks:
 
 ### 7. Channel Identity Reminder
 
-A brief note to anchor the NotebookLM session in the tasan-media identity — included so the human can paste or summarize it into NotebookLM as context.
-
-The tasan-media voice is:
-- Calm and intelligent — like a knowledgeable person explaining something important, not performing urgency
-- Emotionally present — it acknowledges what the viewer might be feeling without exploiting it
-- Analytically honest — it names complexity without drowning in it
-- Non-clickbait — titles and content match; no bait-and-switch
-- Non-hysterical — serious topics are treated seriously, not amplified
-
-This channel does not chase trends for engagement. It covers trends that are genuinely worth understanding.
+A short note the human can paste into NotebookLM as context to anchor the session in the tasan-media voice. Draw the full description from `config/channel-identity.md` — summarize it into 4–6 bullet points that fit naturally into a NotebookLM instruction.
 
 ---
 
