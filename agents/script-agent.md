@@ -4,7 +4,7 @@
 
 Transform a research dossier into a complete, ready-to-record YouTube video script — in the recognizable voice of tasan-media. The script is the last AI-generated step before human production begins.
 
-> **Pipeline position:** Receives one approved research dossier from `content/research/YYYY-MM-DD/`. Output is saved to `content/scripts/YYYY-MM-DD/`. Nothing is published automatically.
+> **Pipeline position:** Receives one approved research dossier from `content/research/YYYY-MM-DD/`. Output is saved to `content/scripts/YYYY-MM-DD/`. Feeds the Scene Production Agent and Voice Prep Agent — both run after script approval. Nothing is published automatically.
 
 Follow `config/channel-identity.md` for editorial tone, emotional style, narrative philosophy, audience relationship, and visual philosophy. The sections below add script-specific guidance on top of that foundation.
 

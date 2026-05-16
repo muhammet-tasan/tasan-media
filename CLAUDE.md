@@ -49,7 +49,20 @@ Tasan Media Agents is the AI-content workflow behind the YouTube channel **tasan
 - **Audience-first language.** Understandable, not jargon-heavy.
 - **Respect the viewer's time and intelligence.**
 
-See `config/channel-principles.md` for the full list.
+See `config/channel-identity.md` for the full editorial identity.
+
+---
+
+## Production Tool Stack
+
+The current video production workflow uses:
+
+- **Canva** — slide design, scene backgrounds, text overlays, simple animations
+- **ElevenLabs** — AI voice generation for narration
+- **CapCut** — final video assembly, B-roll editing, export
+- **Leonardo AI** — optional custom image generation for specific scenes
+
+These are human-operated tools. Agents prepare production-ready briefs; humans execute in the tools.
 
 ---
 
@@ -59,15 +72,22 @@ See `config/channel-principles.md` for the full list.
   - `content/trends/YYYY-MM-DD/`
   - `content/research/YYYY-MM-DD/`
   - `content/scripts/YYYY-MM-DD/`
+  - `content/scenes/YYYY-MM-DD/`
+  - `content/voice/YYYY-MM-DD/`
 - This enables historical tracking, dataset reuse, automation, and reproducibility.
 - File names within a date folder should be descriptive and lowercase-kebab-case.
 
 ---
 
+## Project State
+
+Read `PROJECT_STATUS.md` at the start of any session to quickly understand current project state, completed work, and recommended next steps.
+
+---
+
 ## What NOT to Do (yet)
 
-- Don't add hooks, plugins, or subagents.
-- Don't introduce FastAPI, Docker, PostgreSQL, or a frontend.
-- Don't scrape sites when an official API exists.
 - Don't auto-publish anything.
+- Don't scrape sites when an official API exists.
 - Don't refactor for hypothetical future needs.
+- Don't introduce FastAPI, Docker, or PostgreSQL until a real use case requires them.
