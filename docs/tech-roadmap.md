@@ -15,6 +15,7 @@ These tools are already in active use as human-operated production tools. Agents
 - **Role:** Scene backgrounds, text overlays, simple animations, visual templates for each video.
 - **Why chosen:** No-code, fast, excellent for solo creators, strong template ecosystem, motion features sufficient for educational content.
 - **Agent integration:** Scene Production Agent generates Canva-specific instructions per scene block.
+- **Automation readiness:** 6 base templates established for first video (Warm Static, Dark Two-Text, Data Stat, App Overview, Quote Card, Serious Statement). Stat and quote slides are Canva API candidates—text + optional B-roll swaps. Future: when producing 2+ videos/month, Canva API could reduce template production time from 2.5 hours to <30 min per video.
 - **Future:** Could be partially automated via Canva API when volume justifies it.
 
 ### ElevenLabs — AI voice generation
