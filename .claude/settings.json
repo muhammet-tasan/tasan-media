@@ -1,0 +1,18 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "if": "Bash(git commit*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/update-status-hook.sh 2>/dev/null || true",
+            "statusMessage": "Updating PROJECT_STATUS.md",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

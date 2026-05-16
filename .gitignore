@@ -1,0 +1,25 @@
+# Claude Code
+.claude/settings.local.json
+
+# System
+.DS_Store
+.env
+.env.local
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Node
+node_modules/
+npm-debug.log
