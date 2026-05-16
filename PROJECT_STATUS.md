@@ -38,7 +38,7 @@ Script Agent
 | Trend Scout | `agents/trend-scout.md` | Stable |
 | Research Agent | `agents/research-agent.md` | Stable |
 | Script Agent | `agents/script-agent.md` | Stable |
-| Scene Production Agent | `agents/scene-production-agent.md` | New — not yet run |
+| Scene Production Agent | `agents/scene-production-agent.md` | Stable (first run 2026-05-16) |
 | Voice Prep Agent | `agents/voice-prep-agent.md` | New — not yet run |
 
 **Removed:** NotebookLM Agent (replaced by Canva/ElevenLabs/CapCut workflow)
@@ -51,9 +51,11 @@ Script Agent
 - [2026-05-10] Trend Scout run — first trend report generated for CH/DE/AT topics
 - [2026-05-12] Research Agent run — deep dossier on "KI-Risiken für Kinder" (30+ sources)
 - [2026-05-12] Script Agent run — video script revised 3× to tasan-media voice (v3, ~7 min)
-- [2026-05-12] NotebookLM Agent run — package generated (then agent retired)
+- [2026-05-12] Scene Production Agent run — 16 scenes generated (v2 with production optimization, 2026-05-16)
 - [2026-05-12] Channel identity refactor — `config/channel-identity.md` introduced, duplicated tone rules removed from agents
 - [2026-05-12] Architecture evolution — NotebookLM removed, Canva/ElevenLabs/CapCut workflow introduced, Scene Production Agent and Voice Prep Agent defined
+- [2026-05-16] Canva production guide created — 13 effective scenes, step-by-step instructions, 6 base templates identified, 3–3.5 hour production estimate
+- [2026-05-16] NotebookLM cleanup — folder removed, architecture finalized
 
 ---
 
@@ -77,7 +79,8 @@ Script Agent
 | Trend report | `content/trends/2026-05-10/trends.md` | Complete |
 | Research dossier | `content/research/2026-05-12/ki-risiken-kinder.md` | Complete |
 | Video script | `content/scripts/2026-05-12/ki-risiken-kinder-script.md` | Complete (v3) |
-| Scene package | `content/scenes/2026-05-12/` | **Not yet run** |
+| Scene package | `content/scenes/2026-05-12/ki-risiken-kinder-scenes.md` | Complete (16 scenes, v2 optimization) |
+| Canva production guide | `content/scenes/2026-05-12/canva-production-guide.md` | **Complete — ready for production** |
 | Voice script | `content/voice/2026-05-12/` | **Not yet run** |
 | Final video | — | Not yet produced |
 
@@ -106,12 +109,24 @@ templates/       Reusable prompt fragments (future)
 
 ---
 
-## Next Steps
+## Next Steps (Priority: Ship First Video)
 
-1. **Run Scene Production Agent** on `content/scripts/2026-05-12/ki-risiken-kinder-script.md`
-2. **Run Voice Prep Agent** on the same script
-3. **Human production** — use scene package in Canva, voice script in ElevenLabs, assemble in CapCut
-4. **After first video:** assess what was missing from scene/voice outputs and refine agents
+1. **Human production in Canva** (3–3.5 hours)
+   - Follow `content/scenes/2026-05-12/canva-production-guide.md`
+   - Build 6 base templates, then 13 scene slides
+   - Export all as MP4s
+
+2. **Run Voice Prep Agent** on the script
+   - Generate or record narration for all scenes
+
+3. **Assemble in CapCut**
+   - Import Canva slides in order
+   - Layer voice + B-roll
+   - Add music/ambient sound
+   - Export final video
+
+4. **After first video:** assess production workflow and refine agents if needed
+
 5. **Next trend run** — run Trend Scout again for a fresh topic
 
 ---
