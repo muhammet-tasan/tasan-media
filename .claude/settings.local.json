@@ -10,18 +10,5 @@
       "Read(//c/Users/t_mum/.claude/**)"
     ]
   },
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \".claude\\speak-response.ps1\"",
-            "shell": "powershell",
-            "async": true
-          }
-        ]
-      }
-    ]
-  }
+  "hooks": {}
 }
