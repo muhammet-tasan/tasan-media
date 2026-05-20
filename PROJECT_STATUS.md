@@ -4,6 +4,10 @@
 
 ---
 
+## Recent Updates
+
+(Last update: 2026-05-20 23:24)
+
 ## Current Phase
 
 **Phase 1 — First video production run**
@@ -21,10 +25,16 @@ Research Agent
     ↓ [Human reviews dossier]
 Script Agent
     ↓ [Human approves script]
-    ├── Scene Production Agent → content/scenes/
-    └── Voice Prep Agent       → content/voice/
+    ├── Scene Production Agent     → Visual briefs (tool-agnostic)
+    │   ↓
+    │   Remotion Scene Agent       → Generates React/TS video code
+    │   ↓
+    │   [Render: npx remotion render] → MP4 scene files
+    │
+    └── Voice Prep Agent           → ElevenLabs script with markers
                                     ↓
-                            [Human: Canva + ElevenLabs + CapCut]
+                            [Human: Assemble in CapCut]
+                            (voice + B-roll + music)
                                     ↓
                               Published Video
 ```
@@ -38,10 +48,11 @@ Script Agent
 | Trend Scout | `agents/trend-scout.md` | Stable |
 | Research Agent | `agents/research-agent.md` | Stable |
 | Script Agent | `agents/script-agent.md` | Stable |
-| Scene Production Agent | `agents/scene-production-agent.md` | Stable (first run 2026-05-16) |
+| Scene Production Agent | `agents/scene-production-agent.md` | Updated (2026-05-19) — tool-agnostic visual briefs |
+| Remotion Scene Agent | `agents/remotion-scene-agent.md` | New (2026-05-19) — generates React/TS code |
 | Voice Prep Agent | `agents/voice-prep-agent.md` | New — not yet run |
 
-**Removed:** NotebookLM Agent (replaced by Canva/ElevenLabs/CapCut workflow)
+**Removed:** NotebookLM Agent (replaced by Remotion-first automated rendering)
 
 ---
 
@@ -57,6 +68,7 @@ Script Agent
 - [2026-05-16] Canva production guide created — 13 effective scenes, step-by-step instructions, 6 base templates identified, 3–3.5 hour production estimate
 - [2026-05-16] NotebookLM cleanup — folder removed, architecture finalized
 - [2026-05-16] Pre-commit hook configured — auto-updates PROJECT_STATUS.md with timestamp before each commit
+- [2026-05-19] Remotion architecture planned and initiated — transition from Canva-manual to code-first rendering
 
 ---
 
@@ -65,11 +77,13 @@ Script Agent
 | Decision | Rationale |
 |----------|-----------|
 | Human selection checkpoint between Trend Scout and Research Agent | Token efficiency — deep research is expensive; pick one topic before spending |
-| NotebookLM removed | Replaced by more controllable Canva + ElevenLabs + CapCut stack |
+| NotebookLM removed (2026-05-16) | Replaced by more controllable Canva + ElevenLabs + CapCut stack |
 | Scene blocks as modular units | Enables future per-scene automation; human-editable now |
 | Voice Prep Agent separate from Scene Production Agent | Single responsibility; voice and visuals are independent production streams |
 | `config/channel-identity.md` as shared identity layer | Avoid duplicating tone rules across agents; single place to update |
 | Scene Production + Voice Prep run in parallel | Both consume the script independently; no dependency between them |
+| Remotion replaces manual Canva workflow (2026-05-19) | Code-driven scene rendering eliminates manual slide design; enables full automation and consistent design system enforcement |
+| Scene Production Agent remains (with updated output) | Produces tool-agnostic visual briefs; Remotion Scene Agent translates to code. Keeps human review checkpoint before rendering. |
 
 ---
 
@@ -110,25 +124,35 @@ templates/       Reusable prompt fragments (future)
 
 ---
 
-## Next Steps (Priority: Ship First Video)
+## Next Steps (Priority: Remotion MVP + First Video)
 
-1. **Human production in Canva** (3–3.5 hours)
-   - Follow `content/scenes/2026-05-12/canva-production-guide.md`
-   - Build 6 base templates, then 13 scene slides
-   - Export all as MP4s
+### Phase A — Remotion MVP (Complete, blocking first video)
+1. **Set up Remotion project** — `/video/` folder, Node.js dependencies, config
+2. **Define design system** — colors, typography, motion (from Canva palette)
+3. **Build StatScene component** — Scene 4 (statistic slide, no assets needed)
+4. **Test rendering** — `npx remotion render` produces valid MP4
+5. **Document render workflow** — CLI commands for preview/render/export
 
-2. **Run Voice Prep Agent** on the script
+### Phase B — Remaining Scenes (Parallel with Phase A)
+- Implement remaining scene components (QuoteScene, HookScene, InsightScene, ResourceScene)
+- Convert all 13 scenes from Scene Production Agent output to Remotion code
+
+### Phase C — First Video Assembly
+1. **Run Voice Prep Agent** on the script
    - Generate or record narration for all scenes
-
+2. **Render all scenes** from Remotion (automated)
 3. **Assemble in CapCut**
-   - Import Canva slides in order
-   - Layer voice + B-roll
+   - Import rendered scenes in order
+   - Layer voice narration
+   - Add B-roll where specified
    - Add music/ambient sound
-   - Export final video
+   - Color grade if needed
+   - Export final 1920×1080, 30 FPS
 
-4. **After first video:** assess production workflow and refine agents if needed
-
-5. **Next trend run** — run Trend Scout again for a fresh topic
+### Phase D — After First Video
+1. Assess Remotion workflow — is it faster than Canva was?
+2. Refine Remotion Scene Agent based on learnings
+3. Run Trend Scout again for next topic
 
 ---
 

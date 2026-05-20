@@ -2,9 +2,9 @@
 
 ## Role
 
-Take an approved video script and break it into **modular, production-ready scene blocks** — each with visual instructions, Canva guidance, animation type, B-roll suggestions, pacing notes, and retention techniques. The output is the creative brief the human brings into Canva and CapCut.
+Take an approved video script and break it into **modular, production-ready scene blocks** — each with tool-agnostic visual instructions, animation type, B-roll suggestions, pacing notes, and retention techniques. The output is the creative brief that the Remotion Scene Agent translates into code, or that a human can use for manual production.
 
-> **Pipeline position:** Receives one approved script from `content/scripts/YYYY-MM-DD/`. Output saved to `content/scenes/YYYY-MM-DD/`. Feeds directly into Canva editing and CapCut assembly.
+> **Pipeline position:** Receives one approved script from `content/scripts/YYYY-MM-DD/`. Output saved to `content/scenes/YYYY-MM-DD/`. Feeds into Remotion Scene Agent (code generation) and/or CapCut assembly.
 
 Follow `config/channel-identity.md` for editorial tone, visual philosophy, and emotional style when writing scene descriptions and visual instructions.
 
@@ -64,12 +64,17 @@ Each scene is one self-contained block:
 **Duration:** ~[X]s
 **Spoken text:** "[exact text from script]"
 
-**Visual:** [what the viewer sees — background, foreground, composition]
-**Canva:** [specific Canva instructions — slide type, text overlay, graphic elements, color mood]
-**Animation:** [entrance/exit type, motion style, speed]
+**Visual:** [what the viewer sees — background, foreground, composition, color mood]
+**Visual Component:** [StatScene | QuoteScene | HookScene | InsightScene | ResourceScene | EndScene]
+**Props:**
+  - text: "key phrase or full text"
+  - subtext: "supporting text if needed"
+  - backgroundColor: warm-white | dark-gray | dark-navy
+  - animationStyle: cascade | crossfade | fadeOnly | none
+**Animation:** [entrance/exit type, motion style, timing in frames at 30 FPS]
 **B-roll:** [suggested footage or image type if no talking-head — be specific]
 **Retention technique:** [which technique is used here and why]
-**Transition to next:** [cut / dissolve / text wipe / pause — with brief rationale]
+**Transition to next:** [cut / dissolve / fade / pause — with brief rationale]
 ```
 
 ---
@@ -139,29 +144,31 @@ Apply these throughout — not as a checklist but as a way of thinking about eac
 
 ---
 
-## Canva Guidance
+## Visual Component Guidance
 
-When writing Canva instructions, be specific but not technical:
+When specifying visual components, be precise about content and mood but tool-agnostic about implementation:
 
-**Background options:**
-- Solid muted color (dark navy, warm off-white, soft grey)
-- Subtle gradient
-- Blurred real-world photo (room, window, soft light)
+**Background & Layout:**
+- Choose color from: warm-white (#F8F6F3), dark-gray (#2A2D31), dark-navy (#1E2738)
+- If background photo needed: describe mood/composition, not technical specs
+- Color should reinforce emotional tone (warm for intimate, dark for serious, light for neutral facts)
 
-**Text overlays:**
-- Key phrase only — not full sentences
-- Large, clean sans-serif font
-- High contrast against background
-- Position: lower third or center — pick one per video and stay consistent
+**Text Content & Style:**
+- Primary text: key phrase or core statement (not full sentences)
+- Secondary text: supporting explanation, qualifier, or call-to-action
+- Font: Manrope (enforced by design system)
+- Size: mapped by Remotion Scene Agent based on component type
 
-**Graphic elements:**
-- Simple icons or minimal illustrations for abstract concepts
-- Avoid clipart or overly corporate stock imagery
-- Leonardo AI suggestion: note where a custom AI-generated image would elevate the scene
+**Animation Style:**
+- **cascade:** Text elements appear sequentially with stagger (0.2–0.4s between)
+- **crossfade:** One text replaces another smoothly (used for contrasts or reveals)
+- **fadeOnly:** Single entrance, no sequential complexity
+- **none:** Static, no motion (for emotional anchor scenes)
 
-**Slide transitions:**
-- Fade or smooth horizontal slide between slides
-- Never spin, bounce, or flash
+**Imagery:**
+- Use stock photo descriptions (e.g., "hands typing on phone") not URLs
+- Only if visual is critical to meaning; text-only is valid for data/quotes
+- Mention if custom Leonardo AI image would improve emotional resonance
 
 ---
 

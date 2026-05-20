@@ -1,6 +1,11 @@
-# Canva Production Guide — KI und deine Kinder
+# ⚠️ DEPRECATED — Canva Production Guide — KI und deine Kinder
 
-**Practical production instructions for the 13 effective scenes**
+> **Status:** DEPRECATED (2026-05-19)  
+> This guide describes manual Canva-based production, which has been replaced by **Remotion-first automated rendering**. Kept for reference and archive purposes only.  
+> **New workflow:** Scene Production Agent → Remotion Scene Agent → `npx remotion render` → CapCut  
+> **See:** `agents/remotion-scene-agent.md` and `video/README.md`
+
+**Practical production instructions for the 13 effective scenes** (archived for reference)
 
 - **Date:** 2026-05-16
 - **Target Duration:** ~4:30 min

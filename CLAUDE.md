@@ -55,14 +55,22 @@ See `config/channel-identity.md` for the full editorial identity.
 
 ## Production Tool Stack
 
-The current video production workflow uses:
+The video production workflow is split into automated and human-controlled components:
 
-- **Canva** — slide design, scene backgrounds, text overlays, simple animations
-- **ElevenLabs** — AI voice generation for narration
-- **CapCut** — final video assembly, B-roll editing, export
+**Automated (Code/Agents):**
+- **Remotion** — programmatic video scene rendering (React/TypeScript)
+  - Scene-type components (StatScene, QuoteScene, HookScene, etc.)
+  - Design system enforcement (colors, typography, motion timing)
+  - Generates MP4 output directly, no manual slide design needed
+
+**AI-Assisted (with Human Review):**
+- **ElevenLabs** — AI voice generation for narration (human reviews and records if needed)
 - **Leonardo AI** — optional custom image generation for specific scenes
 
-These are human-operated tools. Agents prepare production-ready briefs; humans execute in the tools.
+**Human Final Assembly:**
+- **CapCut** — final video assembly, B-roll integration, music/ambient sound, export
+
+The Remotion Scene Agent reads Scene Production Agent briefs and generates production-ready React code. No manual Canva design step.
 
 ---
 
