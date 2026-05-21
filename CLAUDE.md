@@ -55,22 +55,28 @@ See `config/channel-identity.md` for the full editorial identity.
 
 ## Production Tool Stack
 
-The video production workflow is split into automated and human-controlled components:
+The video production workflow is **fully programmatic from script to render**, with humans handling asset sourcing and final assembly only:
 
-**Automated (Code/Agents):**
-- **Remotion** — programmatic video scene rendering (React/TypeScript)
-  - Scene-type components (StatScene, QuoteScene, HookScene, etc.)
-  - Design system enforcement (colors, typography, motion timing)
-  - Generates MP4 output directly, no manual slide design needed
+**AI Automation (Script → Code):**
+- **Remotion Generation Agent** — reads approved script, generates:
+  - Visual style guide (mood, colors, typography, motion guidelines)
+  - Asset prompts (detailed image/video generation instructions)
+  - Complete React/TypeScript scene components (HookScene, StatScene, QuoteScene, etc.)
+  - scene registrations in index.tsx (render-ready code, no placeholders)
 
-**AI-Assisted (with Human Review):**
-- **ElevenLabs** — AI voice generation for narration (human reviews and records if needed)
-- **Leonardo AI** — optional custom image generation for specific scenes
+**Programmatic Rendering:**
+- **Remotion** — renders all scenes to MP4 via `npx remotion render`
+  - Scene-type components implement safe areas, animations, design system constraints
+  - No manual Canva or slide design — all visual control is code
+  - Generates broadcast-quality 1920×1080 30FPS H.264 clips
 
-**Human Final Assembly:**
-- **CapCut** — final video assembly, B-roll integration, music/ambient sound, export
+**Human Steps (Asset Sourcing & Voice):**
+- **Human sources assets** — finds or generates Scene 1, 2, etc. images based on asset-prompts.md
+- **ElevenLabs** — AI voice narration (human reviews and may re-record)
+- **Leonardo AI** — optional custom image generation (guided by asset prompts)
 
-The Remotion Scene Agent reads Scene Production Agent briefs and generates production-ready React code. No manual Canva design step.
+**Final Assembly (Human):**
+- **CapCut** — imports rendered scenes, layers voice, adds B-roll, music, export to final video
 
 ---
 

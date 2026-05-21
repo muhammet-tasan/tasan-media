@@ -6,7 +6,7 @@
 
 ## Recent Updates
 
-(Last update: 2026-05-20 23:24)
+(Last update: 2026-05-21 09:00)
 
 ## Current Phase
 
@@ -25,9 +25,9 @@ Research Agent
     ↓ [Human reviews dossier]
 Script Agent
     ↓ [Human approves script]
-    ├── Scene Production Agent     → Visual briefs (tool-agnostic)
+    ├── Remotion Generation Agent  → Visual style guide, asset prompts, React/TS scene code
     │   ↓
-    │   Remotion Scene Agent       → Generates React/TS video code
+    │   [Human sources assets]
     │   ↓
     │   [Render: npx remotion render] → MP4 scene files
     │
@@ -48,11 +48,10 @@ Script Agent
 | Trend Scout | `agents/trend-scout.md` | Stable |
 | Research Agent | `agents/research-agent.md` | Stable |
 | Script Agent | `agents/script-agent.md` | Stable |
-| Scene Production Agent | `agents/scene-production-agent.md` | Updated (2026-05-19) — tool-agnostic visual briefs |
-| Remotion Scene Agent | `agents/remotion-scene-agent.md` | New (2026-05-19) — generates React/TS code |
+| Remotion Generation Agent | `agents/remotion-generation-agent.md` | New (2026-05-21) — replaces Scene Production + Remotion Scene agents |
 | Voice Prep Agent | `agents/voice-prep-agent.md` | New — not yet run |
 
-**Removed:** NotebookLM Agent (replaced by Remotion-first automated rendering)
+**Deprecated:** Scene Production Agent, Remotion Scene Agent (2026-05-21 — replaced by unified Remotion Generation Agent)
 
 ---
 
@@ -69,6 +68,11 @@ Script Agent
 - [2026-05-16] NotebookLM cleanup — folder removed, architecture finalized
 - [2026-05-16] Pre-commit hook configured — auto-updates PROJECT_STATUS.md with timestamp before each commit
 - [2026-05-19] Remotion architecture planned and initiated — transition from Canva-manual to code-first rendering
+- [2026-05-20] Remotion MVP foundation — project setup, design system, core components (FadeIn, SlideUp, TextOverlay, BackgroundImage, SoftGradientOverlay), StatScene
+- [2026-05-21] HookScene implementation — Scene 1 MVP with animation timeline, safe area text, zoom effects
+- [2026-05-21] Agent architecture unified — Scene Production Agent + Remotion Scene Agent merged into single Remotion Generation Agent
+- [2026-05-21] Visual style guide created — comprehensive mood, color, typography, motion, photography, and mobile guidelines
+- [2026-05-21] Asset prompts generated — detailed image generation prompts for Scene 1–16, priority ordering, fallback strategies
 
 ---
 
@@ -83,7 +87,8 @@ Script Agent
 | `config/channel-identity.md` as shared identity layer | Avoid duplicating tone rules across agents; single place to update |
 | Scene Production + Voice Prep run in parallel | Both consume the script independently; no dependency between them |
 | Remotion replaces manual Canva workflow (2026-05-19) | Code-driven scene rendering eliminates manual slide design; enables full automation and consistent design system enforcement |
-| Scene Production Agent remains (with updated output) | Produces tool-agnostic visual briefs; Remotion Scene Agent translates to code. Keeps human review checkpoint before rendering. |
+| Two-stage agent pipeline unified into one (2026-05-21) | Scene Production Agent + Remotion Scene Agent merged into Remotion Generation Agent. Faster, simpler, fewer context boundaries. Single agent reads script → outputs code + style guide + asset prompts. |
+| Reusable component library (2026-05-21) | TextOverlay, BackgroundImage, SoftGradientOverlay, FadeIn, SlideUp are shared. New scene types compose from these — no code duplication. |
 
 ---
 
@@ -96,7 +101,12 @@ Script Agent
 | Video script | `content/scripts/2026-05-12/ki-risiken-kinder-script.md` | Complete (v3) |
 | Scene package | `content/scenes/2026-05-12/ki-risiken-kinder-scenes.md` | Complete (16 scenes, v2 optimization) |
 | Canva production guide | `content/scenes/2026-05-12/canva-production-guide.md` | **Complete — ready for production** |
-| Voice script | `content/voice/2026-05-12/` | **Not yet run** |
+| Visual style guide | `video/public/assets/2026-05-12/ki-risiken-kinder/visual-style-guide.md` | **Complete (2026-05-21)** |
+| Asset prompts | `video/public/assets/2026-05-12/ki-risiken-kinder/asset-prompts.md` | **Complete (2026-05-21)** |
+| Scene 1 component | `video/src/scenes/HookScene.tsx` | **Complete (2026-05-21)** |
+| Scene 4 component | `video/src/scenes/StatScene.tsx` | **Complete (2026-05-20)** |
+| Scene 1 asset (hallway) | `video/public/assets/2026-05-12/ki-risiken-kinder/final-assets/scene-01-hallway.jpg` | **Awaiting human sourcing** |
+| Voice script | `content/voice/2026-05-12/` | Not yet run |
 | Final video | — | Not yet produced |
 
 ---
@@ -110,12 +120,27 @@ content/
   trends/        Trend Scout outputs (YYYY-MM-DD/)
   research/      Research Agent outputs (YYYY-MM-DD/)
   scripts/       Script Agent outputs (YYYY-MM-DD/)
-  scenes/        Scene Production Agent outputs (YYYY-MM-DD/)
+  scenes/        Scene definitions from old workflow (archived)
   voice/         Voice Prep Agent outputs (YYYY-MM-DD/)
 data/
   raw/           Raw API data
   processed/     Normalized data
 docs/            Tech roadmap, data sources
+video/
+  src/
+    scenes/      React/TypeScript scene components
+    components/  Reusable UI components (TextOverlay, BackgroundImage, etc.)
+    styles/      Design system (colors, typography, motion)
+  public/
+    assets/
+      YYYY-MM-DD/
+        <topic-slug>/
+          visual-style-guide.md    (Remotion Generation Agent output)
+          asset-prompts.md         (Remotion Generation Agent output)
+          final-assets/            (human-sourced images/video)
+  renders/
+    YYYY-MM-DD/
+      <topic-slug>/               (output folder for MP4 clips)
 scripts/         Python automation (future)
 templates/       Reusable prompt fragments (future)
 .claude/
@@ -124,35 +149,49 @@ templates/       Reusable prompt fragments (future)
 
 ---
 
-## Next Steps (Priority: Remotion MVP + First Video)
+## Next Steps (Priority: Scene 1 MVP + Asset Generation)
 
-### Phase A — Remotion MVP (Complete, blocking first video)
-1. **Set up Remotion project** — `/video/` folder, Node.js dependencies, config
-2. **Define design system** — colors, typography, motion (from Canva palette)
-3. **Build StatScene component** — Scene 4 (statistic slide, no assets needed)
-4. **Test rendering** — `npx remotion render` produces valid MP4
-5. **Document render workflow** — CLI commands for preview/render/export
+### Phase A — Remotion MVP & Core Infrastructure (In Progress)
+**Status: ~90% complete**
 
-### Phase B — Remaining Scenes (Parallel with Phase A)
-- Implement remaining scene components (QuoteScene, HookScene, InsightScene, ResourceScene)
-- Convert all 13 scenes from Scene Production Agent output to Remotion code
+- ✅ Set up Remotion project — `/video/` folder, Node.js dependencies, config (2026-05-20)
+- ✅ Define design system — colors, typography, motion (2026-05-20)
+- ✅ Build core components — FadeIn, SlideUp, TextOverlay, BackgroundImage, SoftGradientOverlay (2026-05-21)
+- ✅ Build HookScene component — Scene 1 MVP (2026-05-21)
+- ✅ Implement StatScene — Scene 4 (statistic slide) (2026-05-20)
+- ✅ Register compositions in index.tsx (2026-05-21)
+- ✅ Create visual-style-guide.md (2026-05-21)
+- ✅ Create asset-prompts.md (2026-05-21)
+- ✅ Create Remotion Generation Agent specification (2026-05-21)
+- ⏳ **NEXT:** Source or generate Scene 1 background image (scene-01-hallway.jpg) → place in `final-assets/`
 
-### Phase C — First Video Assembly
-1. **Run Voice Prep Agent** on the script
+### Phase B — Scene 1 Test Render (Blocking first video)
+1. **Place scene-01-hallway.jpg** in `video/public/assets/2026-05-12/ki-risiken-kinder/final-assets/`
+2. **Test preview:** `npm start` in video/ → HookScene renders with image
+3. **Test render:** `npx remotion render src/index.tsx Scene01Hook --output renders/2026-05-12/ki-risiken-kinder/scene-01-hook.mp4`
+4. **Verify MP4:** Check output quality, timing, text overlay clarity
+
+### Phase C — Remaining Scenes (Scene 2–6, 8, 13, 16)
+Implement and test remaining scene components based on Remotion Generation Agent output:
+- QuoteScene, InsightScene, ActionScene, EndingScene
+- Source assets for each scene
+- Render all scenes to MP4
+
+### Phase D — First Video Assembly
+1. **Run Voice Prep Agent** on the script (if not yet run)
    - Generate or record narration for all scenes
-2. **Render all scenes** from Remotion (automated)
-3. **Assemble in CapCut**
-   - Import rendered scenes in order
+2. **Assemble in CapCut**
+   - Import all rendered scene MP4 clips in order
    - Layer voice narration
-   - Add B-roll where specified
+   - Add B-roll (if specified in asset-prompts.md)
    - Add music/ambient sound
-   - Color grade if needed
-   - Export final 1920×1080, 30 FPS
+   - Export final 1920×1080, 30 FPS H.264
 
-### Phase D — After First Video
-1. Assess Remotion workflow — is it faster than Canva was?
-2. Refine Remotion Scene Agent based on learnings
-3. Run Trend Scout again for next topic
+### Phase E — After First Video
+1. Review rendering quality, timing, visual impact
+2. Document any iteration patterns
+3. Run Trend Scout for next topic
+4. Begin Phase A for next video (reuse design system, components)
 
 ---
 

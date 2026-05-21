@@ -1,3 +1,7 @@
+⚠️ **DEPRECATED (2026-05-21)** — This agent has been replaced by the **Remotion Generation Agent** (`agents/remotion-generation-agent.md`). The two-stage pipeline (Scene Production → Remotion Scene Agent) is now unified into a single agent that reads scripts directly and outputs production-ready Remotion code. This file is kept for reference only.
+
+---
+
 # Agent: Scene Production Agent
 
 ## Role
