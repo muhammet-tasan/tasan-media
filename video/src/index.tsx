@@ -15,7 +15,7 @@ const Root: React.FC = () => (
       defaultProps={{
         line1: 'Sie ist ruhig.',
         line2: 'Du hast deinen Abend.',
-        backgroundImage: 'assets/2026-05-12/ki-risiken-kinder/final-assets/scene-01-hallway.jpg',
+        backgroundImage: './scene-01-hallway.png',
         durationInFrames: 300,
       }}
     />

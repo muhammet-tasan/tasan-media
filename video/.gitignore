@@ -7,8 +7,9 @@ yarn.lock
 dist/
 .remotion/
 
-# Rendered videos
+# Rendered videos (excluding MVP test renders)
 renders/*
+!renders/2026-05-12/
 !renders/.gitkeep
 
 # IDE / Editor
