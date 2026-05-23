@@ -15,7 +15,7 @@ const Root: React.FC = () => (
       defaultProps={{
         line1: 'Sie ist ruhig.',
         line2: 'Du hast deinen Abend.',
-        backgroundImage: './scene-01-hallway.png',
+        backgroundImage: undefined,
         durationInFrames: 300,
       }}
     />
