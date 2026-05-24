@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Img, useCurrentFrame, interpolate, Easing } from 'remotion';
+import { AbsoluteFill, Img, useCurrentFrame, interpolate, Easing, staticFile } from 'remotion';
 
 interface BackgroundImageProps {
   src: string;
@@ -43,7 +43,7 @@ export const BackgroundImage: React.FC<BackgroundImageProps> = ({
           transformOrigin: 'center',
         }}
       >
-        <Img src={src} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        <Img src={staticFile(src)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
       </AbsoluteFill>
 
       {/* Brightness adjustment overlay */}
