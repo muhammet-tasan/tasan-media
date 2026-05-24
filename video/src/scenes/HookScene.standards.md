@@ -10,7 +10,9 @@
 
 HookScene is the reusable opening component for tasan-media videos. It establishes a calm, intimate, emotionally intentional documentary moment that orients viewers and builds trust.
 
-The component is designed to feel like the opening shot of a modern documentary — restrained, cinematic, and trustworthy. It avoids clickbait, urgency, or attention-hacking. Instead, it invites.
+The component is designed to feel like the opening shot of a premium documentary (Netflix, ARTE, BBC) — restrained, cinematic, trustworthy, and technically sophisticated. It avoids clickbait, urgency, or attention-hacking. Instead, it invites through carefully crafted composition and motion design.
+
+**Aesthetic Reference:** Netflix documentaries, ARTE productions, Apple keynote style — minimal motion, premium texture, emotionally controlled pacing.
 
 ---
 
@@ -47,27 +49,37 @@ The component is designed to feel like the opening shot of a modern documentary 
 - **Negative space:** Right side and top left clear for balance
 - **Eye movement:** Naturally guides viewer into hallway depth
 
-### Overlays
-- **Gradient overlay:** Bottom + sides (SoftGradientOverlay direction="both", opacity=0.55)
-- **Vignette:** Radial darkening (VignetteOverlay opacity=0.35, strength=0.65)
-- **Purpose:** Text readability + cinematic focus + atmospheric depth
+### Overlays (Premium Treatment)
+- **Gradient overlay:** Bottom only (SoftGradientOverlay direction="bottom", opacity=0.48)
+  - Gentle darkening for text readability
+  - Preserves left-side clarity (where typography sits)
+  - Prevents heavy-handed overlay feeling
+- **Vignette:** Subtle radial darkening (VignetteOverlay opacity=0.25, strength=0.55)
+  - Refined focus effect without heavy darkness
+  - Creates depth and cinematic framing
+  - Premium look, never heavy-handed
+- **Film grain:** SVG-based texture overlay (GrainOverlay opacity=0.08, scale=1)
+  - Subtle documentary/cinema texture
+  - Fractal noise + displacement map
+  - Adds premium production value without visible noise
+- **Purpose:** Text readability + cinematic focus + atmospheric texture + premium aesthetic
 
 ---
 
 ## Motion Standards
 
 ### Ken Burns Effect
-- **Type:** Subtle documentary-style push-in (breathing zoom)
+- **Type:** Extremely subtle documentary-style push-in (breathing zoom)
 - **Start scale:** 1.0
-- **End scale:** 1.025 (2.5% total zoom)
+- **End scale:** 1.015 (1.5% total zoom — barely subconscious)
 - **Duration:** Full scene (210 frames)
-- **Easing:** `Easing.inOut(Easing.cubic)` (natural, no bounce)
+- **Easing:** `Easing.inOut(Easing.exp)` (smooth exponential, premium feel)
 
 ### Text Fades
 - **Fade-in duration:** 21–24 frames (0.7–0.8 seconds @ 30fps) for slow atmospheric entry
 - **Fade-out duration:** 18–30 frames (0.6–1.0 seconds @ 30fps) for gentle exit
-- **Easing:** `Easing.inOut(Easing.quad)` (smooth, atmospheric, not UI-like)
-- **Philosophy:** Fades should feel cinematic and emotional, not instant or snappy
+- **Easing:** `Easing.inOut(Easing.exp)` (exponential smoothness, premium cinematic feel)
+- **Philosophy:** Fades feel cinematic and emotional, never instant or snappy — comparable to Netflix documentary openings
 - **No bounce, snap, or overshoot**
 
 ### Motion Philosophy
