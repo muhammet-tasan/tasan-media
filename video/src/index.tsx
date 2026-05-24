@@ -8,7 +8,7 @@ const Root: React.FC = () => (
     <Composition
       id="Scene01Hook"
       component={HookScene}
-      durationInFrames={200}
+      durationInFrames={210}
       fps={30}
       width={1920}
       height={1080}
@@ -16,7 +16,7 @@ const Root: React.FC = () => (
         line1: 'Sie ist ruhig.',
         line2: 'Du hast deinen Abend.',
         backgroundImage: 'scene-01-hallway.png',
-        durationInFrames: 200,
+        durationInFrames: 210,
       }}
     />
     <Composition
