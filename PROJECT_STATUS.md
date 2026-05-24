@@ -6,7 +6,11 @@
 
 ## Recent Updates
 
-(2026-05-23 01:57)
+(2026-05-25 15:34)
+- HookScene refined to production quality with exact typography composition (2026-05-24)
+- Asset structure consolidated: single final-assets location per topic (2026-05-25)
+- Scene standards documented: SCENE-STANDARDS.md with reusable patterns (2026-05-25)
+- StatisticScene implemented as second reusable primitive (2026-05-25)
 
 ## Current Phase
 
@@ -73,6 +77,11 @@ Script Agent
 - [2026-05-21] Agent architecture unified — Scene Production Agent + Remotion Scene Agent merged into single Remotion Generation Agent
 - [2026-05-21] Visual style guide created — comprehensive mood, color, typography, motion, photography, and mobile guidelines
 - [2026-05-21] Asset prompts generated — detailed image generation prompts for Scene 1–16, priority ordering, fallback strategies
+- [2026-05-24] HookScene refined to production quality — exact typography composition, soft readability gradient, emotional pacing refined (2026-05-24/25)
+- [2026-05-25] Scene standards documented — SCENE-STANDARDS.md with reusable patterns: typography, composition, motion, duration, overlays
+- [2026-05-25] Asset structure consolidated — single final-assets location per topic, removed duplicate assets
+- [2026-05-25] StatisticScene implemented — second reusable production primitive following HookScene standards
+- [2026-05-25] Design system extended — sceneStandards constants added to tasanMediaStyle.ts for future scene generation
 
 ---
 
@@ -103,9 +112,10 @@ Script Agent
 | Canva production guide | `content/scenes/2026-05-12/canva-production-guide.md` | **Complete — ready for production** |
 | Visual style guide | `video/public/assets/2026-05-12/ki-risiken-kinder/visual-style-guide.md` | **Complete (2026-05-21)** |
 | Asset prompts | `video/public/assets/2026-05-12/ki-risiken-kinder/asset-prompts.md` | **Complete (2026-05-21)** |
-| Scene 1 component | `video/src/scenes/HookScene.tsx` | **Complete (2026-05-21)** |
-| Scene 4 component | `video/src/scenes/StatScene.tsx` | **Complete (2026-05-20)** |
-| Scene 1 asset (hallway) | `video/public/assets/2026-05-12/ki-risiken-kinder/final-assets/scene-01-hallway.jpg` | **Awaiting human sourcing** |
+| Scene 1 (HookScene) | `video/src/scenes/HookScene.tsx` + standards | **Production quality (2026-05-25)** — Refined typography, composition, motion |
+| Scene 4 (StatisticScene) | `video/src/scenes/StatisticScene.tsx` + standards | **Production quality (2026-05-25)** — Second reusable primitive |
+| Scene standards | `video/src/scenes/SCENE-STANDARDS.md` | **Complete (2026-05-25)** — Documented patterns for future scenes |
+| Scene 1 asset (hallway) | `video/public/assets/2026-05-12/ki-risiken-kinder/final-assets/scene-01-hallway.png` | **Awaiting human sourcing** |
 | Voice script | `content/voice/2026-05-12/` | Not yet run |
 | Final video | — | Not yet produced |
 
@@ -149,49 +159,62 @@ templates/       Reusable prompt fragments (future)
 
 ---
 
-## Next Steps (Priority: Scene 1 MVP + Asset Generation)
+## Next Steps (Priority: Asset Sourcing → Full Video Production)
 
-### Phase A — Remotion MVP & Core Infrastructure (In Progress)
-**Status: ~90% complete**
+### Phase A — Remotion MVP & Core Infrastructure (✅ Complete)
+**Status: 100% complete**
 
 - ✅ Set up Remotion project — `/video/` folder, Node.js dependencies, config (2026-05-20)
 - ✅ Define design system — colors, typography, motion (2026-05-20)
 - ✅ Build core components — FadeIn, SlideUp, TextOverlay, BackgroundImage, SoftGradientOverlay (2026-05-21)
-- ✅ Build HookScene component — Scene 1 MVP (2026-05-21)
-- ✅ Implement StatScene — Scene 4 (statistic slide) (2026-05-20)
+- ✅ Build HookScene component — Scene 1 production quality (2026-05-24/25)
+- ✅ Build StatisticScene component — Scene 4 production quality (2026-05-25)
 - ✅ Register compositions in index.tsx (2026-05-21)
 - ✅ Create visual-style-guide.md (2026-05-21)
 - ✅ Create asset-prompts.md (2026-05-21)
 - ✅ Create Remotion Generation Agent specification (2026-05-21)
-- ⏳ **NEXT:** Source or generate Scene 1 background image (scene-01-hallway.jpg) → place in `final-assets/`
+- ✅ Consolidate asset structure — single final-assets location (2026-05-25)
+- ✅ Document scene standards — SCENE-STANDARDS.md for future reuse (2026-05-25)
+- ✅ **Establish reusable primitives** — HookScene + StatisticScene as proven patterns (2026-05-25)
 
-### Phase B — Scene 1 Test Render (Blocking first video)
-1. **Place scene-01-hallway.jpg** in `video/public/assets/2026-05-12/ki-risiken-kinder/final-assets/`
-2. **Test preview:** `npm start` in video/ → HookScene renders with image
-3. **Test render:** `npx remotion render src/index.tsx Scene01Hook --output renders/2026-05-12/ki-risiken-kinder/scene-01-hook.mp4`
-4. **Verify MP4:** Check output quality, timing, text overlay clarity
+### Phase B — Remaining Scene Primitives (Next)
+Implement remaining reusable scene types following documented standards (SCENE-STANDARDS.md):
+- **QuoteScene** — Full-screen quote with speaker/source attribution
+- **InsightScene** — Headline + explanatory text
+- **ActionScene** — Call-to-action with visual context
+- **EndingScene** — Closing hook with channel branding
+Each follows HookScene + StatisticScene patterns: typography, composition, motion, overlays.
 
-### Phase C — Remaining Scenes (Scene 2–6, 8, 13, 16)
-Implement and test remaining scene components based on Remotion Generation Agent output:
-- QuoteScene, InsightScene, ActionScene, EndingScene
-- Source assets for each scene
-- Render all scenes to MP4
+### Phase C — Asset Sourcing & Scene Rendering
+1. **Human sources all scene assets** (per asset-prompts.md)
+   - Scene 1 (hallway), Scene 2 (montage), etc.
+   - Place in `video/public/assets/2026-05-12/ki-risiken-kinder/final-assets/`
+2. **Render all scene components**
+   - HookScene, StatisticScene, and remaining scenes
+   - Generate MP4 clips to `renders/2026-05-12/ki-risiken-kinder/`
 
-### Phase D — First Video Assembly
-1. **Run Voice Prep Agent** on the script (if not yet run)
-   - Generate or record narration for all scenes
-2. **Assemble in CapCut**
-   - Import all rendered scene MP4 clips in order
+### Phase D — Voice Preparation
+1. **Run Voice Prep Agent** on the script
+   - Generate ElevenLabs narration with markers
+   - Alternative: Human records voiceover
+2. **Prepare voice file(s)** for CapCut assembly
+
+### Phase E — Final Assembly & Export
+1. **Assemble in CapCut**
+   - Import rendered scene MP4s in order
    - Layer voice narration
-   - Add B-roll (if specified in asset-prompts.md)
+   - Add B-roll (per asset-prompts.md if needed)
    - Add music/ambient sound
-   - Export final 1920×1080, 30 FPS H.264
+   - Export final 1920×1080, 30 FPS H.264 MP4
+2. **Upload to YouTube**
+   - Verify timing, audio sync, visual quality
+   - Add description, tags, chapters (from script)
 
-### Phase E — After First Video
-1. Review rendering quality, timing, visual impact
-2. Document any iteration patterns
-3. Run Trend Scout for next topic
-4. Begin Phase A for next video (reuse design system, components)
+### Phase F — Iteration & Next Topics
+1. Document lessons learned from first complete video
+2. Update scene standards based on final video quality feedback
+3. Begin next topic with Trend Scout (reuse design system, components)
+4. Establish continuous production cadence
 
 ---
 
