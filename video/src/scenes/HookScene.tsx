@@ -3,6 +3,7 @@ import { AbsoluteFill, useCurrentFrame, interpolate, Easing } from 'remotion';
 import { BackgroundImage } from '../components/BackgroundImage';
 import { SoftGradientOverlay } from '../components/SoftGradientOverlay';
 import { VignetteOverlay } from '../components/VignetteOverlay';
+import { GrainOverlay } from '../components/GrainOverlay';
 import { FadeIn } from '../components/FadeIn';
 import { colors } from '../styles/colors';
 import { typography } from '../styles/typography';
@@ -34,15 +35,16 @@ export const HookScene: React.FC<HookSceneProps> = ({
     extrapolateRight: 'clamp',
   });
 
-  // Ken Burns breathing zoom: 1.0 → 1.025 (2.5% subtle push-in)
-  const zoomScale = interpolate(frame, [15, durationInFrames], [1.0, 1.025], {
+  // Ken Burns breathing zoom: 1.0 → 1.015 (1.5% extremely subtle push-in)
+  const zoomScale = interpolate(frame, [15, durationInFrames], [1.0, 1.015], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
-    easing: Easing.inOut(Easing.cubic),
+    easing: Easing.inOut(Easing.exp),
   });
 
   // Line 1: slow atmospheric fade-in 0.7s, hold 1.8s, slow fade-out 0.6s
   // Frames: fade-in 15-36 (0.7s), display 36-90 (1.8s), fade-out 90-108 (0.6s)
+  // Using expo easing for smooth, premium cinematic feel
   const line1Opacity = interpolate(
     frame,
     [15, 36, 90, 108],
@@ -50,12 +52,13 @@ export const HookScene: React.FC<HookSceneProps> = ({
     {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
-      easing: Easing.inOut(Easing.quad),
+      easing: Easing.inOut(Easing.exp),
     }
   );
 
   // Line 2: slow atmospheric fade-in 0.8s, hold 1.0s, slow fade-out 1.0s
   // Frames: pause 108-126, fade-in 126-150 (0.8s), display 150-180 (1.0s), fade-out 180-210 (1.0s)
+  // Using expo easing for smooth, premium cinematic feel
   const line2Opacity = interpolate(
     frame,
     [126, 150, 180, 210],
@@ -63,7 +66,7 @@ export const HookScene: React.FC<HookSceneProps> = ({
     {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
-      easing: Easing.inOut(Easing.quad),
+      easing: Easing.inOut(Easing.exp),
     }
   );
 
@@ -76,20 +79,25 @@ export const HookScene: React.FC<HookSceneProps> = ({
             src={backgroundImage}
             brightness={100}
             zoomFrom={1.0}
-            zoomTo={1.025}
+            zoomTo={1.015}
             durationInFrames={durationInFrames - 15}
           />
         </AbsoluteFill>
       ) : null}
 
-      {/* Gradient overlay: bottom and sides for readability */}
+      {/* Gradient overlay: gentle bottom-only for text readability (preserves left side) */}
       <AbsoluteFill style={{ opacity: bgOpacity }}>
-        <SoftGradientOverlay direction="both" opacity={0.55} />
+        <SoftGradientOverlay direction="bottom" opacity={0.48} />
       </AbsoluteFill>
 
-      {/* Cinematic vignette for focus and depth */}
+      {/* Subtle vignette for cinematic focus (premium aesthetic) */}
       <AbsoluteFill style={{ opacity: bgOpacity }}>
-        <VignetteOverlay opacity={0.35} strength={0.65} />
+        <VignetteOverlay opacity={0.25} strength={0.55} />
+      </AbsoluteFill>
+
+      {/* Film grain texture for premium documentary aesthetic */}
+      <AbsoluteFill style={{ opacity: bgOpacity }}>
+        <GrainOverlay opacity={0.08} scale={1} />
       </AbsoluteFill>
 
       {/* Line 1: "Sie ist ruhig." — 104pt bold, intentional lower-left composition */}
