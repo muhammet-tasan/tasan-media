@@ -42,12 +42,11 @@ export const HookScene: React.FC<HookSceneProps> = ({
     easing: Easing.inOut(Easing.exp),
   });
 
-  // Line 1: slow atmospheric fade-in 0.7s, hold 1.8s, slow fade-out 0.6s
-  // Frames: fade-in 15-36 (0.7s), display 36-90 (1.8s), fade-out 90-108 (0.6s)
-  // Using expo easing for smooth, premium cinematic feel
+  // Line 1: fade-in 0.5s (frame 15, 18 frames = 0.6s), hold ~1.2s, fade-out ~2.8s (18 frames = 0.6s), gone ~3.5s
+  // Frames: fade-in 15-33 (18 frames), display 33-84 (51 frames), fade-out 84-102 (18 frames)
   const line1Opacity = interpolate(
     frame,
-    [15, 36, 90, 108],
+    [15, 33, 84, 102],
     [0, 1, 1, 0],
     {
       extrapolateLeft: 'clamp',
@@ -56,13 +55,12 @@ export const HookScene: React.FC<HookSceneProps> = ({
     }
   );
 
-  // Line 2: slow atmospheric fade-in 0.8s, hold 1.0s, slow fade-out 1.0s
-  // Frames: pause 108-126, fade-in 126-150 (0.8s), display 150-180 (1.0s), fade-out 180-210 (1.0s)
-  // Using expo easing for smooth, premium cinematic feel
+  // Line 2: fade-in start ~4.1s (frame 123, 18 frames = 0.6s), hold until end
+  // Frames: fade-in 123-141 (18 frames), hold 141-210 (no fade-out)
   const line2Opacity = interpolate(
     frame,
-    [126, 150, 180, 210],
-    [0, 1, 1, 0],
+    [123, 141, 210],
+    [0, 1, 1],
     {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
@@ -100,41 +98,62 @@ export const HookScene: React.FC<HookSceneProps> = ({
         <GrainOverlay opacity={0.08} scale={1} />
       </AbsoluteFill>
 
-      {/* Line 1: "Sie ist ruhig." — 104pt bold, intentional lower-left composition */}
+      {/* Soft left-bottom readability gradient — darker near typography, invisible transition to image */}
       <div
         style={{
           position: 'absolute',
-          bottom: 110,
-          left: 160,
-          maxWidth: 672,
+          left: 0,
+          bottom: 0,
+          width: '60%',
+          height: '55%',
+          background: `linear-gradient(
+            to right top,
+            rgba(0, 0, 0, 0.24) 0%,
+            rgba(0, 0, 0, 0.12) 50%,
+            rgba(0, 0, 0, 0) 100%
+          )`,
+          pointerEvents: 'none',
+          opacity: bgOpacity,
+        }}
+      />
+
+      {/* Line 1: "Sie ist ruhig." — 112pt bold, intentional lower-left cinematic composition */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 190,
+          left: 180,
+          maxWidth: 780,
+          textAlign: 'left',
           opacity: line1Opacity,
-          fontSize: 104,
+          fontSize: 112,
           fontFamily: typography.family,
           fontWeight: 700,
           color: '#F5F2EC',
-          lineHeight: 1.05,
-          letterSpacing: '-1px',
-          textShadow: '0 2px 16px rgba(0, 0, 0, 0.5)',
+          lineHeight: 1.0,
+          letterSpacing: '-2px',
+          textShadow: '0 20px rgba(0, 0, 0, 0.35)',
         }}
       >
         {line1}
       </div>
 
-      {/* Line 2: "Du hast deinen Abend." — Same 104pt bold, intentional placement */}
+      {/* Line 2: "Du hast deinen Abend." — Same 112pt bold, intentional cinematic placement */}
       <div
         style={{
           position: 'absolute',
-          bottom: 110,
-          left: 160,
-          maxWidth: 672,
+          bottom: 190,
+          left: 180,
+          maxWidth: 780,
+          textAlign: 'left',
           opacity: line2Opacity,
-          fontSize: 104,
+          fontSize: 112,
           fontFamily: typography.family,
           fontWeight: 700,
           color: '#F5F2EC',
-          lineHeight: 1.05,
-          letterSpacing: '-1px',
-          textShadow: '0 2px 16px rgba(0, 0, 0, 0.5)',
+          lineHeight: 1.0,
+          letterSpacing: '-2px',
+          textShadow: '0 20px rgba(0, 0, 0, 0.35)',
         }}
       >
         {line2}

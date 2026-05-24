@@ -19,28 +19,31 @@ The component is designed to feel like the opening shot of a premium documentary
 ## Typography Standards
 
 ### Primary Hook Text
-- **Size:** 104px
+- **Size:** 112px
 - **Weight:** Bold (700)
 - **Font:** Manrope
 - **Color:** #F5F2EC (warm off-white, not pure white)
-- **Line Height:** 1.05 (tight, for cinematic presence)
-- **Letter Spacing:** -1px (optical tightening)
-- **Text Shadow:** `0 2px 16px rgba(0, 0, 0, 0.5)` (soft depth + readability)
-- **Opacity:** Animated via interpolate(), minimum 92% when visible
+- **Line Height:** 1.0 (tight, premium cinematic presence)
+- **Letter Spacing:** -2px (optical tightening, cinematic scale)
+- **Text Shadow:** `0 20px rgba(0, 0, 0, 0.35)` (soft subtle depth + readability)
+- **Opacity:** Static 0.96 for text opacity over fades
+- **Text Align:** Left
 
 ### Constraints
-- **Max Width:** 672px (35% of 1920px frame width)
-- **Text should feel intentionally cinematic**, not like subtitles or captions
+- **Max Width:** 780px (40% of 1920px frame width, allows wider horizontal layout)
+- **Text should feel intentionally cinematic and integrated into image composition**, not like subtitles or captions
 - **No decorations, no emoji**, pure typography
+- **Premium documentary aesthetic**, calm and emotionally intentional
 
 ---
 
 ## Composition Standards
 
 ### Positioning
-- **Left margin:** 160px (intentional breathing room, centered in lower-left area)
-- **Bottom margin:** 110px (slightly higher in frame for better visual balance)
-- **Placement:** Lower-left third of frame with intentional spacing
+- **Left margin:** 180px (intentional breathing room from left edge, premium spacing)
+- **Bottom margin:** 190px (intentional vertical centering in lower half, stronger visual presence)
+- **Placement:** Lower-left composition with integrated documentary positioning
+- **Max Width:** 780px (allows fuller horizontal layout without edge-hugging)
 - **Avoid:** Center-bottom, centered text, symmetrical layouts, edge-hugging text
 
 ### Visual Hierarchy
@@ -50,8 +53,13 @@ The component is designed to feel like the opening shot of a premium documentary
 - **Eye movement:** Naturally guides viewer into hallway depth
 
 ### Overlays (Premium Treatment)
-- **Gradient overlay:** Bottom only (SoftGradientOverlay direction="bottom", opacity=0.48)
-  - Gentle darkening for text readability
+- **Left-bottom readability gradient:** Positioned in lower-left area (opacity 0.24)
+  - Darker near typography, invisible transition into image
+  - Linear gradient from bottom-left (to right top), fades smoothly
+  - Covers ~60% width, ~55% height of frame
+  - Ensures text legibility without visible hard edge
+- **Bottom gradient overlay:** SoftGradientOverlay direction="bottom", opacity=0.48
+  - Gentle darkening for overall text readability
   - Preserves left-side clarity (where typography sits)
   - Prevents heavy-handed overlay feeling
 - **Vignette:** Subtle radial darkening (VignetteOverlay opacity=0.25, strength=0.55)
@@ -98,19 +106,19 @@ The component is designed to feel like the opening shot of a premium documentary
 ### Text Timing (Frame-based)
 
 #### Line 1 ("Sie ist ruhig." or similar)
-- **Fade in:** Frames 15–36 (21 frames = 0.7s, slow atmospheric entry)
-- **Display:** Frames 36–90 (54 frames = 1.8s emotional hold)
-- **Fade out:** Frames 90–108 (18 frames = 0.6s, gentle exit)
-- **Total:** 93 frames (3.1 seconds)
+- **Fade in:** Frames 15–33 (18 frames = 0.6s, slow atmospheric entry)
+- **Display:** Frames 33–84 (51 frames = 1.7s emotional hold)
+- **Fade out:** Frames 84–102 (18 frames = 0.6s, gentle exit)
+- **Total:** 87 frames (2.9 seconds, fully gone by ~3.4s)
 
 #### Emotional Pause
-- **Frames 108–126:** 18 frames (0.6s, breath of silence between texts)
+- **Frames 102–123:** 21 frames (0.7s, breath of silence between texts)
 
 #### Line 2 ("Du hast deinen Abend." or similar)
-- **Fade in:** Frames 126–150 (24 frames = 0.8s, slow atmospheric entry)
-- **Display:** Frames 150–180 (30 frames = 1.0s emotional hold)
-- **Fade out:** Frames 180–210 (30 frames = 1.0s, extended gentle exit)
-- **Total:** 84 frames (2.8 seconds)
+- **Fade in:** Frames 123–141 (18 frames = 0.6s, slow atmospheric entry)
+- **Display:** Frames 141–210 (69 frames = 2.3s emotional hold until scene end)
+- **No fade out:** Text holds until end of scene for final emotional resolution
+- **Total:** 87 frames (2.9 seconds)
 
 #### Final Transition
 - **Frame 210:** Seamless fade-out into next scene or silence
@@ -118,13 +126,13 @@ The component is designed to feel like the opening shot of a premium documentary
 
 ### Emotional Pacing
 - **0–15 frames:** Hallway already visible (establishes setting, no delay)
-- **15–36 frames:** First text fades in very slowly (0.7s, recognition moment)
-- **36–90 frames:** Emotional hold (1.8s, let the recognition settle)
-- **90–108 frames:** First text fades out gently (0.6s, completion)
-- **108–126 frames:** Emotional pause, silence (0.6s, breath between texts)
-- **126–150 frames:** Second text fades in slowly (0.8s, reflection enters)
-- **150–180 frames:** Emotional hold (1.0s, let the echo resonate)
-- **180–210 frames:** Second text fades out (1.0s, gentle resolution into next scene)
+- **15–33 frames:** First text fades in slowly (0.6s, recognition moment)
+- **33–84 frames:** Emotional hold (1.7s, let the recognition settle deeply)
+- **84–102 frames:** First text fades out gently (0.6s, completion and release)
+- **102–123 frames:** Emotional pause, silence (0.7s, breath between texts)
+- **123–141 frames:** Second text fades in slowly (0.6s, reflection enters)
+- **141–210 frames:** Emotional hold (2.3s, let the echo resonate, extends to scene end)
+- **Philosophy:** Longer holds for emotional depth, equal fade durations (18 frames) for consistency, natural breathing between elements
 
 ---
 
@@ -224,14 +232,20 @@ npx remotion render src/index.tsx Scene01Hook --output renders/2026-05-12/ki-ris
 - **File size:** ~2.8–3.5 MB (7 seconds, with background image)
 
 ### Quality Checks Before Approval
-- [ ] Text is 104px, bold, warm off-white
-- [ ] Text positioned lower-left (120px left, 140px bottom)
+- [ ] Text is 112px, bold (700), warm off-white (#F5F2EC)
+- [ ] Text positioned lower-left (180px left, 190px bottom)
+- [ ] Max width 780px with left text alignment
+- [ ] Line height 1.0, letter spacing -2px for cinematic optical tightening
+- [ ] Text shadow 0 20px rgba(0,0,0,0.35) for soft subtle depth
+- [ ] Soft left-bottom readability gradient (0.24 opacity) covers lower-left area
 - [ ] Background image visible and in focus
-- [ ] No text overlap (line 2 fades in after line 1 fades out)
-- [ ] Ken Burns zoom is subtle (barely noticeable)
-- [ ] Vignette/gradient enhance readability
+- [ ] No text overlap (line 2 fades in after line 1 completely fades out)
+- [ ] Ken Burns zoom is subtle (1.5%, barely noticeable breathing)
+- [ ] Vignette/gradient/grain enhance premium documentary aesthetic
+- [ ] Text fades feel slow and emotional (18-frame fades = 0.6s each)
 - [ ] No TikTok effects, aggressive motion, or overstimulation
-- [ ] Emotional pacing feels intentional, not rushed
+- [ ] Emotional pacing feels intentional, integrated, cinematic, not rushed
+- [ ] Overall aesthetic: Netflix/ARTE documentary opening, not subtitle-like
 
 ---
 
