@@ -16,9 +16,9 @@ interface HookSceneProps {
 }
 
 /**
- * HookScene — Cinematic documentary opening hook
+ * HookScene — tasan-media cinematic documentary opening hook
  * Establishes calm, intimate domestic moment with emotional pacing
- * Lower-left composition with breathing motion and vignette treatment
+ * Standards: 104px bold typography, lower-left composition, 2-3% zoom, 7s duration
  */
 export const HookScene: React.FC<HookSceneProps> = ({
   line1,
@@ -28,23 +28,23 @@ export const HookScene: React.FC<HookSceneProps> = ({
 }) => {
   const frame = useCurrentFrame();
 
-  // Background fade-in: frames 0-18 (0.6s)
-  const bgOpacity = interpolate(frame, [0, 18], [0, 1], {
+  // Background fade-in: frames 0-15 (0.5s)
+  const bgOpacity = interpolate(frame, [0, 15], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  // Ken Burns breathing zoom: 1.0 → 1.015 (very gentle)
-  const zoomScale = interpolate(frame, [18, durationInFrames], [1.0, 1.015], {
+  // Ken Burns breathing zoom: 1.0 → 1.025 (2.5% subtle push-in)
+  const zoomScale = interpolate(frame, [15, durationInFrames], [1.0, 1.025], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
     easing: Easing.inOut(Easing.cubic),
   });
 
-  // Line 1: fade in 0.7s, hold 1.3s, fade out 1s
+  // Line 1: fade in ~0.5s (15 frames), hold ~2.5s, fade out ~0.5s (15 frames)
   const line1Opacity = interpolate(
     frame,
-    [18, 39, 99, 129],
+    [15, 30, 105, 120],
     [0, 1, 1, 0],
     {
       extrapolateLeft: 'clamp',
@@ -53,10 +53,10 @@ export const HookScene: React.FC<HookSceneProps> = ({
     }
   );
 
-  // Line 2: fade in 1s, hold 2s, fade out 1s
+  // Line 2: fade in ~0.5s (15 frames) starting at frame 105, hold ~1.5s, fade out ~0.5s (15 frames)
   const line2Opacity = interpolate(
     frame,
-    [129, 159, 189, 210],
+    [105, 120, 180, 195],
     [0, 1, 1, 0],
     {
       extrapolateLeft: 'clamp',
@@ -74,13 +74,13 @@ export const HookScene: React.FC<HookSceneProps> = ({
             src={backgroundImage}
             brightness={100}
             zoomFrom={1.0}
-            zoomTo={1.015}
-            durationInFrames={durationInFrames - 18}
+            zoomTo={1.025}
+            durationInFrames={durationInFrames - 15}
           />
         </AbsoluteFill>
       ) : null}
 
-      {/* Gradient overlay: bottom and sides for vignette effect */}
+      {/* Gradient overlay: bottom and sides for readability */}
       <AbsoluteFill style={{ opacity: bgOpacity }}>
         <SoftGradientOverlay direction="both" opacity={0.55} />
       </AbsoluteFill>
@@ -90,39 +90,41 @@ export const HookScene: React.FC<HookSceneProps> = ({
         <VignetteOverlay opacity={0.35} strength={0.65} />
       </AbsoluteFill>
 
-      {/* Line 1: "Sie ist ruhig." — Lower-left documentary composition */}
+      {/* Line 1: "Sie ist ruhig." — 104pt bold, lower-left tasan-media standard */}
       <div
         style={{
           position: 'absolute',
-          bottom: style.safeArea.vertical + 40,
-          left: style.safeArea.horizontal,
-          maxWidth: 1000,
+          bottom: 140,
+          left: 120,
+          maxWidth: 672,
           opacity: line1Opacity,
-          fontSize: 56,
+          fontSize: 104,
           fontFamily: typography.family,
-          fontWeight: 400,
-          color: colors.warmWhite,
-          lineHeight: '1.2',
-          letterSpacing: '-0.5px',
+          fontWeight: 700,
+          color: '#F5F2EC',
+          lineHeight: 1.05,
+          letterSpacing: '-1px',
+          textShadow: '0 2px 16px rgba(0, 0, 0, 0.5)',
         }}
       >
         {line1}
       </div>
 
-      {/* Line 2: "Du hast deinen Abend." — Same lower-left position */}
+      {/* Line 2: "Du hast deinen Abend." — Same 104pt bold lower-left */}
       <div
         style={{
           position: 'absolute',
-          bottom: style.safeArea.vertical + 40,
-          left: style.safeArea.horizontal,
-          maxWidth: 1000,
+          bottom: 140,
+          left: 120,
+          maxWidth: 672,
           opacity: line2Opacity,
-          fontSize: 56,
+          fontSize: 104,
           fontFamily: typography.family,
-          fontWeight: 400,
-          color: colors.warmWhite,
-          lineHeight: '1.2',
-          letterSpacing: '-0.5px',
+          fontWeight: 700,
+          color: '#F5F2EC',
+          lineHeight: 1.05,
+          letterSpacing: '-1px',
+          textShadow: '0 2px 16px rgba(0, 0, 0, 0.5)',
         }}
       >
         {line2}
