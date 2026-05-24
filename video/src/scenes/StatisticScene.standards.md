@@ -1,111 +1,140 @@
 # StatisticScene Standards — tasan-media Documentary Statistic Presentation
 
 **Component:** `StatisticScene.tsx`  
-**Status:** Production standard (2026-05-25)  
-**Audience:** Documentary-style statistic slides (3–7 min videos, Scene 4 variant)
+**Status:** Production standard (2026-05-25, redesigned)  
+**Audience:** Documentary-style statistic slides (3–7 min videos, scene 4 variant)
 
 ---
 
 ## Overview
 
-StatisticScene is a reusable component for presenting key statistics with description and source attribution. It establishes the same calm, cinematic documentary moment as HookScene, but optimized for:
-- **Large number presentation** (statistic primary element)
-- **Explanatory context** (description secondary)
-- **Source attribution** (credibility via citation)
+StatisticScene presents key statistics with cinematic dominance and atmospheric depth. **It has its own visual language distinct from HookScene** — not lower-left edge positioning, but center-left dominance.
 
-The component follows HookScene's proven standards: premium typography, lower-left composition, subtle motion, documentary aesthetic.
+The statistic must feel emotionally important and immediately readable on mobile. The supporting description and atmospheric B-roll background create context without distraction.
 
-**Aesthetic Reference:** Same as HookScene — Netflix documentaries, ARTE productions, premium documentary opening style — minimal motion, premium texture, emotionally controlled pacing.
+**Aesthetic Reference:** Netflix documentaries (statistic sequences), ARTE productions — intimate B-roll backgrounds, large cinematic typography, documentary mood. Modern editorial, not presentation slides or infographics.
 
 ---
 
 ## Typography Standards
 
-### Statistic (Primary Element)
-- **Size:** 112px (same as HookScene primary text, cinematic presence)
-- **Weight:** Bold (700)
-- **Font:** Manrope
-- **Color:** #F5F2EC (warm off-white)
-- **Line Height:** 1.0 (tight, premium)
-- **Letter Spacing:** -2px (optical tightening)
-- **Text Shadow:** `0 20px rgba(0, 0, 0, 0.35)` (soft subtle depth)
-- **Opacity:** Fades in/out via interpolate()
+### Statistic (Dominant Primary Element)
+```
+Font: Manrope
+Weight: 700 (bold)
+Size: 160px (LARGE, dominates frame)
+Line Height: 0.95 (tight, cinematic presence)
+Letter Spacing: -3px (strong optical tightening for large scale)
+Color: #F5F2EC (warm off-white)
+Opacity: Fades in/out via interpolate()
+Text Shadow: 0 24px rgba(0, 0, 0, 0.45) (stronger shadow for dominance)
+Max Width: 900px (allows flexible number formats)
+Text Align: Left (not centered)
+```
 
-### Description (Secondary Element)
-- **Size:** 48px (substantial, sub-headline level)
-- **Weight:** Regular (400)
-- **Font:** Manrope
-- **Color:** #F5F2EC (warm off-white)
-- **Line Height:** 1.2 (readable)
-- **Letter Spacing:** 0px (no tightening)
-- **Text Shadow:** `0 12px rgba(0, 0, 0, 0.25)` (softer than stat shadow)
-- **Opacity:** Fades in/out via interpolate()
+**Philosophy:** The statistic is the scene's emotional anchor. 160px is substantially larger than HookScene (112px) because the statistic must dominate the frame and be immediately readable on mobile phones.
+
+### Description (Supporting Context)
+```
+Font: Manrope
+Weight: 400 (regular)
+Size: 52px (substantial, supports statistic hierarchy)
+Line Height: 1.25 (readable breathing)
+Letter Spacing: 0px (no tightening)
+Color: #F5F2EC (warm off-white)
+Opacity: Fades in/out via interpolate()
+Text Shadow: 0 16px rgba(0, 0, 0, 0.35) (softer than statistic)
+Max Width: 820px (proportional to statistic width)
+Text Align: Left
+```
 
 ### Source Attribution (Caption)
-- **Size:** 24px (small but readable)
-- **Weight:** Regular (400)
-- **Font:** Manrope
-- **Color:** #F5F2EC (warm off-white)
-- **Line Height:** 1.4 (airy)
-- **Letter Spacing:** 0.5px (slight breathing)
-- **Opacity:** 0.80 (lighter than description for visual hierarchy)
-- **Shadow:** None (minimal styling for caption)
-
-### Constraints
-- **Stat Max Width:** 780px (allows wider layout for large numbers)
-- **Description Max Width:** 780px (consistent with stat)
-- **Text Align:** Left (not centered, documentary convention)
+```
+Font: Manrope
+Weight: 400 (regular)
+Size: 24px (small, corner position)
+Line Height: 1.4 (airy)
+Letter Spacing: 0.5px (slight breathing)
+Color: #F5F2EC
+Opacity: 0.75 (lighter than description for visual hierarchy)
+Text Shadow: None
+Position: Bottom-right corner (distance from statistic)
+```
 
 ---
 
 ## Composition Standards
 
-### Positioning
-- **Stat Position:** left: 180px, bottom: 280px (higher up for visual hierarchy)
-- **Description Position:** left: 180px, bottom: 190px (lower, supporting role)
-- **Source Position:** right: 180px, bottom: 80px (bottom-right corner, optional)
-- **Placement:** Lower portion of frame, intentional spacing
-- **Avoid:** Center-bottom, centered text, edge-hugging
+### Positioning (Center-Left Layout)
+- **Statistic position:** left: 260px, bottom: 480px (center-left, visually dominant)
+- **Description position:** left: 260px, bottom: 310px (naturally beneath statistic)
+- **Source position:** right: 260px, bottom: 100px (bottom-right corner)
 
-### Visual Hierarchy
-- **Statistic:** Primary visual anchor (largest, highest position)
-- **Description:** Secondary supporting element (medium size, lower)
-- **Source:** Tertiary attribution (smallest, corner position)
-- **Negative space:** Right side and top clear for balance
-- **Eye movement:** Top-to-bottom natural flow (stat → description → source)
+### Philosophy: Center-Left Dominance
+Unlike HookScene's lower-left composition, StatisticScene uses **center-left positioning** with a **larger statistic that dominates the frame**. This creates:
+- **Visual dominance** (large typography commands attention)
+- **Balance** (centered enough to feel intentional, not edge-hugging)
+- **Asymmetry** (right side of frame remains open for atmospheric B-roll)
+- **Mobile readability** (large size visible on small screens)
 
-### Overlays (Premium Treatment)
-Same as HookScene for consistency:
-- **Left-bottom readability gradient:** opacity=0.24, linear gradient to right-top
-- **Bottom gradient overlay:** SoftGradientOverlay direction="bottom", opacity=0.48
-- **Vignette:** Subtle radial darkening (opacity=0.25, strength=0.55)
-- **Film grain:** SVG-based texture overlay (opacity=0.08, scale=1)
-- **Purpose:** Text readability + cinematic focus + atmospheric texture
+### Required Background Image
+**StatisticScene REQUIRES a background image.** The background is not optional:
+- **Type:** Blurred documentary-style B-roll image
+- **Atmosphere:** Teenager / phone / evening / digital-life context
+- **Style:** Heavily softened and darkened, blurred depth of field
+- **Mood:** Intimate, observational, calm documentary aesthetic
+- **Composition:** Real-life moment (not staged), room/hands/screen visible
+- **Contrast:** Warm light (lamp/window) + cool light (screen glow)
+
+**Purpose:** The background establishes mood and context without distraction. It's atmospheric support for the statistic, not a decorative element.
+
+---
+
+## Overlays (Enhanced for Center-Left Composition)
+
+### Gradient Overlays (Enhanced Coverage)
+1. **Heavy base gradient overlay:** SoftGradientOverlay direction="both", opacity=0.62
+   - Darker and more extensive than HookScene
+   - Creates strong atmospheric mood around centered statistic
+   - Supports high contrast for text dominance
+
+2. **Center-left radial readability gradient:** opacity=0.3
+   - Positioned at left side where statistic lives
+   - Radial from center-left (30% horizontal, 50% vertical)
+   - Covers ~70% width, ~60% height from top
+   - Darker near text, fades to transparent right-top
+
+### Vignette (Cinematic Frame)
+- VignetteOverlay opacity=0.25, strength=0.55
+- Same as HookScene (consistent cinematic framing)
+
+### Film Grain (Premium Texture)
+- GrainOverlay opacity=0.08, scale=1
+- Same as HookScene (documentary texture)
 
 ---
 
 ## Motion Standards
 
-### Ken Burns Effect
-- **Type:** Subtle documentary-style push-in
+### Ambient Drift (Extremely Subtle)
+- **Type:** Almost imperceptible slow push-in (even more subtle than HookScene)
 - **Start scale:** 1.0
-- **End scale:** 1.015 (1.5% total zoom)
+- **End scale:** 1.008 (0.8% total movement, barely noticeable)
 - **Duration:** Full scene (210 frames)
 - **Easing:** `Easing.inOut(Easing.exp)`
-- **Philosophy:** Almost subconscious, viewer feels mood not zoom
+- **Philosophy:** The background breathes gently. Viewer should feel mood, not notice motion.
 
-### Text Fades
+### Text Fades (Emotional Pacing)
 - **Fade-in duration:** 18 frames (0.6s @ 30fps) for slow atmospheric entry
 - **Fade-out duration:** 18 frames (0.6s @ 30fps) for gentle exit
-- **Easing:** `Easing.inOut(Easing.exp)` (exponential smoothness, premium cinematic)
-- **Philosophy:** Fades feel cinematic and emotional, never instant or snappy
-- **No bounce, snap, or overshoot**
+- **Easing:** `Easing.inOut(Easing.exp)` (exponential smoothness)
+- **Philosophy:** Same as HookScene — cinematic, not UI-like
 
 ### Motion Philosophy
-Same as HookScene:
-- **Movement should be almost subconscious**
-- **The viewer should feel the mood, not notice the zoom**
-- **No aggressive pan, no aggressive zoom, no TikTok caption motion**
+- **No flashy infographic animation**
+- **No social-media-style statistic effects**
+- **No aggressive motion**
+- **Mood over spectacle**
 
 ---
 
@@ -113,56 +142,47 @@ Same as HookScene:
 
 ### Scene Duration
 - **Total:** 210 frames (7 seconds @ 30fps)
-- **Same as HookScene for consistency**
+- **Consistency:** Same as HookScene for production workflow
 
 ### Text Timing (Frame-based)
 
 #### Statistic
-- **Fade in:** Frames 15–33 (18 frames = 0.6s, slow atmospheric entry)
-- **Display:** Frames 33–84 (51 frames = 1.7s, emotional hold)
-- **Fade out:** Frames 84–102 (18 frames = 0.6s, gentle exit)
-- **Total:** 87 frames (2.9 seconds)
+- **Fade in:** Frames 15–33 (18 frames = 0.6s)
+- **Display:** Frames 33–84 (51 frames = 1.7s)
+- **Fade out:** Frames 84–102 (18 frames = 0.6s)
 
-#### Emotional Pause
-- **Frames 102–123:** 21 frames (0.7s, breath of silence between stat and description)
+#### Pause
+- **Frames 102–123:** 21 frames (0.7s, breath between elements)
 
 #### Description
-- **Fade in:** Frames 123–141 (18 frames = 0.6s, slow atmospheric entry)
-- **Display:** Frames 141–210 (69 frames = 2.3s, emotional hold until scene end)
-- **No fade out:** Holds until end for resolution
-- **Total:** 87 frames (2.9 seconds)
-
-### Emotional Pacing
-- **0–15 frames:** Background fades in (establishes context)
-- **15–33 frames:** Statistic fades in very slowly (0.6s, recognition moment)
-- **33–84 frames:** Emotional hold (1.7s, let the impact settle)
-- **84–102 frames:** Statistic fades out gently (0.6s, completion)
-- **102–123 frames:** Emotional pause, silence (0.7s, breath between elements)
-- **123–141 frames:** Description fades in slowly (0.6s, context enters)
-- **141–210 frames:** Emotional hold (2.3s, resonates to scene end)
-- **Philosophy:** Both elements get emotional space, consistent breathing pattern with HookScene
+- **Fade in:** Frames 123–141 (18 frames = 0.6s)
+- **Display:** Frames 141–210 (69 frames = 2.3s, holds to end)
 
 ---
 
 ## Visual Standards
 
 ### Atmosphere
-- **Mood:** Informative, trustworthy, documentary
-- **Lighting:** Context-dependent (if background image)
-- **Texture:** Real, not stylized; premium documentary aesthetic
-- **Emotional tone:** Credible, authoritative, calm
+- **Mood:** Documentary, informative, intimate
+- **Tone:** Trustworthy, observational, calm
+- **Texture:** Real documentary B-roll, not synthetic or staged
+- **Scale:** Personal moment, not grand statement
 
-### Color
-- **Background:** Dark navy (default: #1E2738) or real documentary image
-- **Text:** Warm off-white #F5F2EC (consistency across all scenes)
-- **Overlays:** Dark (readability), subtle vignette (cinema)
-- **Avoid:** Bright colors, cold whites, saturated tones
+### Background Requirement
+The background image is critical to StatisticScene's quality:
+- Blurred documentary photograph of teenage digital life
+- Evening setting with warm/cool light contrast
+- Smartphone or screen visible (but not intrusive)
+- Real domestic space (bedroom, living room, study area)
+- Partial visibility of person (hands, silhouette, or background)
 
-### Image Requirements (Optional Background)
-- **Style:** Documentary photograph of relevant context scene
-- **Resolution:** 1920×1080+ (for Ken Burns zoom)
-- **Format:** PNG or JPEG, served via `staticFile('filename.png')`
-- **Alternative:** Can omit background (uses dark navy with overlays for clean statistical presentation)
+See `statistic-scene-image-prompt.md` for detailed generation/sourcing instructions.
+
+### Color Palette
+- **Text:** #F5F2EC (warm off-white, consistent with HookScene)
+- **Background:** Warm (tungsten lamps) + cool (screen light) contrast
+- **Overlays:** Dark for readability and mood
+- **Avoid:** Bright colors, pure white text, saturated tones, generic stock imagery
 
 ---
 
@@ -171,9 +191,9 @@ Same as HookScene:
 ```typescript
 interface StatisticSceneProps {
   stat: string;              // Statistic (e.g., "2 / 3", "66 %")
-  description: string;       // Explanatory text
+  description: string;       // Explanatory text (52px size)
   source?: string;           // Optional source attribution
-  backgroundImage?: string;  // Optional filename in public/
+  backgroundImage: string;   // REQUIRED: path to B-roll image in final-assets/
   durationInFrames?: number; // Default: 210 (7 seconds)
 }
 ```
@@ -194,6 +214,7 @@ interface StatisticSceneProps {
     stat: '2 / 3',
     description: 'der Jugendlichen in Deutschland nutzen KI-Chatbots wöchentlich.',
     source: 'Bitkom 2025',
+    backgroundImage: 'assets/2026-05-12/ki-risiken-kinder/final-assets/scene-04-statistic-bg.jpg',
     durationInFrames: 210,
   }}
 />
@@ -204,92 +225,93 @@ interface StatisticSceneProps {
 ## Customization & Variations
 
 ### Allowed Variations
-- **Statistic content:** Any number format or ratio
+- **Statistic content:** Any number, ratio, or percentage
 - **Description:** 1–3 sentences explaining the statistic
-- **Source:** Any source attribution or citation
-- **Background image:** Different documentary-style photographs (optional)
-- **Duration:** Can extend to 8–10 seconds by adjusting frame counts proportionally
+- **Source:** Any citation or attribution
+- **Background image:** Different documentary B-roll (must fit aesthetic)
+- **Duration:** Can extend to 8–10 seconds if holding longer
 
 ### Do Not Modify
-- **Typography size, weight, color** (brand standards)
-- **Composition positioning** (documentary standards)
-- **Motion philosophy** (subtlety is the point)
-- **Overlay treatment** (readability + focus)
-- **Fade timing** (emotional pacing consistency)
+- **Statistic typography size or weight** (160px bold is non-negotiable for dominance)
+- **Composition centering** (center-left layout is core identity)
+- **Overlay intensity** (enhanced overlays are required for cinematic mood)
+- **Background requirement** (background image is NOT optional)
+- **Fade timing** (18-frame fades for emotional consistency)
 
 ---
 
-## Rendering & Export
+## Quality Checks Before Approval
 
-### Command
-```bash
-npx remotion render src/index.tsx Scene04Statistic --output renders/2026-05-25/statistic-scene.mp4
-```
-
-### Output Specs
-- **Codec:** H.264 (MP4)
-- **Resolution:** 1920×1080
-- **Frame rate:** 30 FPS
-- **Color space:** sRGB
-- **File size:** ~2.0–2.8 MB (7 seconds, no background image)
-
-### Quality Checks Before Approval
-- [ ] Stat text is 112px, bold, warm off-white
-- [ ] Description text is 48px, regular, same color
-- [ ] Source is 24px, positioned bottom-right (if present)
-- [ ] Stat positioned lower portion of frame (180px left, 280px bottom)
-- [ ] Description positioned below stat (180px left, 190px bottom)
-- [ ] Ken Burns zoom is subtle (barely noticeable)
-- [ ] All overlays (gradient/vignette/grain) enhance readability
-- [ ] No TikTok effects, aggressive motion, or overstimulation
-- [ ] Emotional pacing feels intentional (stat → pause → description)
-- [ ] Stat fades in/out smoothly with 18-frame fades
-- [ ] Description holds until end, no abrupt cut-off
+- [ ] Statistic is 160px, bold (700), warm off-white (#F5F2EC)
+- [ ] Statistic dominates frame visually and emotionally
+- [ ] Description is 52px, clearly visible beneath statistic
+- [ ] Source is 24px, positioned bottom-right, visually recessed
+- [ ] Background image is present, blurred, darkened, atmospheric
+- [ ] Background shows documentary B-roll (teenager/phone/evening scene)
+- [ ] Gradient overlays are darker and more extensive than HookScene
+- [ ] Text shadows provide strong contrast against background
+- [ ] Ken Burns zoom is extremely subtle (0.8%, barely noticeable)
+- [ ] Statistic fades in/out smoothly with 18-frame duration
+- [ ] Description enters after pause (0.7s breathing)
+- [ ] No flashy animation, no social-media effects
+- [ ] Overall feeling is Netflix/ARTE documentary, not PowerPoint or infographic
+- [ ] Scene feels emotionally important, not generic data presentation
 
 ---
 
 ## Comparison with HookScene
 
-Both follow the same standards:
-
 | Aspect | HookScene | StatisticScene |
 |--------|-----------|----------------|
-| **Duration** | 7s (210 frames) | 7s (210 frames) |
-| **Primary text size** | 112px | 112px |
-| **Secondary text** | None | 48px description |
-| **Composition** | Lower-left | Lower-left with stat above description |
-| **Motion** | Ken Burns + text fades | Ken Burns + text fades |
-| **Overlays** | Gradient + vignette + grain | Same |
-| **Easing** | Easing.inOut(Easing.exp) | Same |
-| **Philosophy** | Documentary opening | Documentary statistic presentation |
+| **Primary text size** | 112px | 160px (larger, dominates) |
+| **Positioning** | Lower-left edge (180px left) | Center-left (260px left) |
+| **Composition philosophy** | Documentary opening | Statistic dominance |
+| **Description text** | None | 52px (supporting) |
+| **Background** | Optional hallway image | REQUIRED B-roll image |
+| **Gradient overlay opacity** | 0.48 (gentle) | 0.62 (enhanced) |
+| **Motion** | 1.5% zoom | 0.8% drift (more subtle) |
+| **Overall feel** | Opening moment | Informative documentary |
+| **Typography hierarchy** | Primary only | Stat > Description > Source |
 
 ---
 
 ## What StatisticScene Is
 
-- ✓ **Documentary statistic moment:** Real, calm, credible
-- ✓ **Emotional anchor:** Establishes authority and trust
+- ✓ **Documentary statistic moment:** Real B-roll, intimate atmosphere
+- ✓ **Emotionally dominant:** Large typography commands attention
 - ✓ **Cinematic presentation:** Intentional, restrained, premium
 - ✓ **Reusable primitive:** Works for any statistic in 3–7 min video
-- ✓ **Brand standard:** Consistent with HookScene aesthetic
+- ✓ **Own visual language:** Not HookScene positioning, not PowerPoint
+- ✓ **Netflix/ARTE aesthetic:** Modern documentary editorial
 
 ---
 
 ## What StatisticScene Is Not
 
-- ❌ Not a bullet-point slide (no list, single statistic only)
-- ❌ Not a data chart (visual presentation, not graphic)
-- ❌ Not a news ticker (no scrolling, no information density)
-- ❌ Not a commercial pitch (no urgency, no FOMO)
-- ❌ Not a subtitle slide (too large, too intentional)
+- ❌ Not a subtitle slide (statistic is primary, dominant)
+- ❌ Not a PowerPoint data slide (cinematic B-roll, not plain gradient)
+- ❌ Not an infographic (no animated numbers, no charts)
+- ❌ Not a TikTok statistic (no social-media-style animation)
+- ❌ Not a news ticker (no scrolling, no urgency)
+- ❌ Not edge-positioned text (center-left layout with visual balance)
 
 ---
 
 ## Rationale
 
-StatisticScene uses the same 112px typography as HookScene because statistics—like cinematic moments—benefit from scale and weight. 48px for description is substantial enough to command attention but secondary to the statistic. Lower-left positioning maintains documentary convention. The breathing pacing (0.7s pause between stat and description) gives viewers time to absorb the number before learning its context.
+StatisticScene's 160px typography dominates because statistics deserve cinematic weight. The center-left positioning (not lower-left) creates balance and intentionality. The required atmospheric B-roll background transforms the scene from a "presentation slide" into an intimate documentary moment. Heavily darkened overlays ensure the large text reads clearly while maintaining mood. Enhanced overlays and larger typography distinguish StatisticScene from HookScene — each scene type has its own visual language.
 
-Together, these choices create a moment that feels like a carefully researched statistic presented in a premium documentary—not like a generic data slide.
+Together, these choices create a statistic that feels important, credible, and cinematic — worthy of a Netflix documentary.
+
+---
+
+## Background Image Sourcing
+
+See `statistic-scene-image-prompt.md` for:
+- Detailed generation prompts
+- Visual references
+- Sourcing strategies (search, generate, photograph)
+- Asset approval workflow
 
 ---
 

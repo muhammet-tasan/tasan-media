@@ -6,26 +6,31 @@ import { VignetteOverlay } from '../components/VignetteOverlay';
 import { GrainOverlay } from '../components/GrainOverlay';
 import { colors } from '../styles/colors';
 import { typography } from '../styles/typography';
-import { sceneStandards } from '../styles/tasanMediaStyle';
 
 interface StatisticSceneProps {
   stat: string;                    // e.g., "2 / 3" or "66 %"
   description: string;             // e.g., "der Jugendlichen in Deutschland nutzen KI-Chatbots wöchentlich."
   source?: string;                 // e.g., "Bitkom 2025"
-  backgroundImage?: string;        // Optional background image path
+  backgroundImage?: string;        // Required: blurred documentary B-roll image
   durationInFrames?: number;       // Default: 210 (7 seconds)
 }
 
 /**
- * StatisticScene — Premium documentary presentation of a statistic
- * Follows HookScene standards: warm text, subtle overlays, emotional pacing
+ * StatisticScene — Premium documentary statistic presentation
+ * Own visual language: large dominant statistic, atmospheric B-roll background
  *
- * Composition: Lower-left positioning (intentional, not centered)
- * Typography: Primary (stat) 112px bold, secondary (description) 48px, caption (source) 24px
- * Motion: 18-frame fades, emotional holds, breathing pattern, Ken Burns zoom
+ * NOT HookScene positioning. StatisticScene has its own standards:
+ * - Statistic dominates frame (160px bold, center-left positioning)
+ * - Description positioned naturally beneath
+ * - Required atmospheric B-roll background (blurred, darkened, heavily treated)
+ * - Cinematic documentary aesthetic: Netflix/ARTE statistic sequences
+ * - Target: emotionally important, immediately readable on mobile
+ *
+ * Typography: Statistic 160px bold (dominates), Description 52px (supporting)
+ * Composition: Center-left layout with intentional visual balance
+ * Background: Blurred documentary B-roll (teenager/phone/evening/digital atmosphere)
+ * Motion: Extremely subtle ambient drift, no flashy animation
  * Duration: 7 seconds (210 frames @ 30fps)
- *
- * Example: "2 / 3" with description "der Jugendlichen in Deutschland nutzen KI-Chatbots wöchentlich."
  */
 export const StatisticScene: React.FC<StatisticSceneProps> = ({
   stat,
@@ -42,14 +47,15 @@ export const StatisticScene: React.FC<StatisticSceneProps> = ({
     extrapolateRight: 'clamp',
   });
 
-  // Ken Burns breathing zoom: 1.0 → 1.015 (1.5% subtle push-in)
-  const zoomScale = interpolate(frame, [15, durationInFrames], [1.0, 1.015], {
+  // Extremely subtle ambient drift (barely noticeable slow push-in)
+  // 1.0 → 1.008 (0.8% total movement, almost imperceptible)
+  const zoomScale = interpolate(frame, [15, durationInFrames], [1.0, 1.008], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
     easing: Easing.inOut(Easing.exp),
   });
 
-  // Stat number: fade-in 0.5s (frame 15, 18 frames = 0.6s), hold ~1.7s, fade-out ~2.8s
+  // Statistic: fade-in 0.5s (frame 15, 18 frames = 0.6s), hold ~1.7s, fade-out ~2.8s
   // Frames: fade-in 15-33 (18 frames), display 33-84 (51 frames), fade-out 84-102 (18 frames)
   const statOpacity = interpolate(
     frame,
@@ -80,25 +86,25 @@ export const StatisticScene: React.FC<StatisticSceneProps> = ({
 
   return (
     <AbsoluteFill style={{ backgroundColor: colors.darkNavy }}>
-      {/* Background with Ken Burns breathing zoom */}
+      {/* Background: Required atmospheric B-roll image (blurred, darkened) */}
       {backgroundImage ? (
         <AbsoluteFill style={{ opacity: bgOpacity }}>
           <BackgroundImage
             src={backgroundImage}
-            brightness={100}
+            brightness={50} // Heavily darkened for statistic dominance
             zoomFrom={1.0}
-            zoomTo={1.015}
+            zoomTo={1.008} // Extremely subtle drift
             durationInFrames={durationInFrames - 15}
           />
         </AbsoluteFill>
       ) : null}
 
-      {/* Gradient overlay: gentle bottom-only for text readability */}
+      {/* Heavy gradient overlay: darker, more coverage for cinematic mood */}
       <AbsoluteFill style={{ opacity: bgOpacity }}>
-        <SoftGradientOverlay direction="bottom" opacity={0.48} />
+        <SoftGradientOverlay direction="both" opacity={0.62} />
       </AbsoluteFill>
 
-      {/* Subtle vignette for cinematic focus */}
+      {/* Subtle vignette for cinematic frame (same as HookScene) */}
       <AbsoluteFill style={{ opacity: bgOpacity }}>
         <VignetteOverlay opacity={0.25} strength={0.55} />
       </AbsoluteFill>
@@ -108,18 +114,18 @@ export const StatisticScene: React.FC<StatisticSceneProps> = ({
         <GrainOverlay opacity={0.08} scale={1} />
       </AbsoluteFill>
 
-      {/* Soft left-bottom readability gradient */}
+      {/* Center-left readability gradient (larger coverage for centered composition) */}
       <div
         style={{
           position: 'absolute',
           left: 0,
-          bottom: 0,
-          width: '60%',
-          height: '55%',
-          background: `linear-gradient(
-            to right top,
-            rgba(0, 0, 0, 0.24) 0%,
-            rgba(0, 0, 0, 0.12) 50%,
+          top: '20%',
+          width: '70%',
+          height: '60%',
+          background: `radial-gradient(
+            ellipse at 30% 50%,
+            rgba(0, 0, 0, 0.3) 0%,
+            rgba(0, 0, 0, 0.15) 40%,
             rgba(0, 0, 0, 0) 100%
           )`,
           pointerEvents: 'none',
@@ -127,43 +133,43 @@ export const StatisticScene: React.FC<StatisticSceneProps> = ({
         }}
       />
 
-      {/* Statistic number: 112px bold, lower-left composition */}
+      {/* Statistic number: 160px bold, dominates frame with center-left positioning */}
       <div
         style={{
           position: 'absolute',
-          bottom: 280,
-          left: 180,
-          maxWidth: 780,
+          bottom: 480,
+          left: 260,
+          maxWidth: 900,
           textAlign: 'left',
           opacity: statOpacity,
-          fontSize: 112,
+          fontSize: 160,
           fontFamily: typography.family,
           fontWeight: 700,
           color: '#F5F2EC',
-          lineHeight: 1.0,
-          letterSpacing: '-2px',
-          textShadow: '0 20px rgba(0, 0, 0, 0.35)',
+          lineHeight: 0.95, // Slightly tighter for cinematic presence
+          letterSpacing: '-3px', // Stronger tightening for large size
+          textShadow: '0 24px rgba(0, 0, 0, 0.45)', // Stronger shadow for dominance
         }}
       >
         {stat}
       </div>
 
-      {/* Description: 48px regular, lower-left composition */}
+      {/* Description: 52px regular, naturally positioned beneath statistic */}
       <div
         style={{
           position: 'absolute',
-          bottom: 190,
-          left: 180,
-          maxWidth: 780,
+          bottom: 310,
+          left: 260,
+          maxWidth: 820,
           textAlign: 'left',
           opacity: descriptionOpacity,
-          fontSize: 48,
+          fontSize: 52,
           fontFamily: typography.family,
           fontWeight: 400,
           color: '#F5F2EC',
-          lineHeight: 1.2,
+          lineHeight: 1.25,
           letterSpacing: '0px',
-          textShadow: '0 12px rgba(0, 0, 0, 0.25)',
+          textShadow: '0 16px rgba(0, 0, 0, 0.35)',
         }}
       >
         {description}
@@ -174,16 +180,16 @@ export const StatisticScene: React.FC<StatisticSceneProps> = ({
         <div
           style={{
             position: 'absolute',
-            bottom: 80,
-            right: 180,
-            opacity: sourceOpacity,
+            bottom: 100,
+            right: 260,
+            opacity: sourceOpacity * 0.75, // Lighter for hierarchy
             fontSize: 24,
             fontFamily: typography.family,
             fontWeight: 400,
             color: '#F5F2EC',
             lineHeight: 1.4,
             letterSpacing: '0.5px',
-            opacity: sourceOpacity * 0.80, // Slightly dimmer for hierarchy
+            textShadow: 'none',
           }}
         >
           {source}
