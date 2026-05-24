@@ -67,6 +67,8 @@ The video production workflow is **fully programmatic from script to render**, w
 **Programmatic Rendering:**
 - **Remotion** — renders all scenes to MP4 via `npx remotion render`
   - Scene-type components implement safe areas, animations, design system constraints
+  - All scenes follow reusable standards: `video/src/scenes/SCENE-STANDARDS.md`
+  - Typography, motion, composition, overlays, and pacing are documented & reusable
   - No manual Canva or slide design — all visual control is code
   - Generates broadcast-quality 1920×1080 30FPS H.264 clips
 
