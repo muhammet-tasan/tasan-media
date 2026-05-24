@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>StatisticScene Background Generator</title>
+  <style>
+    body { margin: 0; padding: 20px; font-family: monospace; }
+    canvas { border: 1px solid #ccc; max-width: 100%; }
+  </style>
+</head>
+<body>
+  <h2>StatisticScene Background Placeholder</h2>
+  <p>This generates a cinematic documentary-style background placeholder.</p>
+  <p>For production, use the prompt in statistic-scene-image-prompt.md to source/generate a real B-roll image.</p>
+  <canvas id="canvas" width="1920" height="1080"></canvas>
+  <br><button onclick="downloadImage()">Download as PNG</button>
+  
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Create documentary-style gradient background
+    // Warm (tungsten) upper-left, cool (screen) lower-right
+    
+    // Base gradient: warm light (left) to cool light (right)
+    const grad1 = ctx.createLinearGradient(0, 0, 1920, 1080);
+    grad1.addColorStop(0, '#3D2817');      // Deep warm brown
+    grad1.addColorStop(0.4, '#4A3520');    // Warm dark
+    grad1.addColorStop(0.7, '#2A3E4F');    // Transitional
+    grad1.addColorStop(1, '#1A2A3D');      // Cool deep blue
+    ctx.fillStyle = grad1;
+    ctx.fillRect(0, 0, 1920, 1080);
+    
+    // Add radial gradient for depth (light source from left-center)
+    const radGrad = ctx.createRadialGradient(400, 350, 200, 400, 350, 900);
+    radGrad.addColorStop(0, 'rgba(255, 200, 100, 0.15)');
+    radGrad.addColorStop(0.5, 'rgba(100, 150, 200, 0.08)');
+    radGrad.addColorStop(1, 'rgba(20, 40, 80, 0.3)');
+    ctx.fillStyle = radGrad;
+    ctx.fillRect(0, 0, 1920, 1080);
+    
+    // Add noise/grain texture
+    const imageData = ctx.getImageData(0, 0, 1920, 1080);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const noise = Math.random() * 20 - 10;
+      data[i] += noise;      // R
+      data[i + 1] += noise;  // G
+      data[i + 2] += noise;  // B
+      // A stays unchanged
+    }
+    ctx.putImageData(imageData, 0, 0);
+    
+    // Add subtle blue screen glow effect (lower right)
+    const screenGlow = ctx.createRadialGradient(1500, 800, 100, 1500, 800, 600);
+    screenGlow.addColorStop(0, 'rgba(100, 150, 220, 0.2)');
+    screenGlow.addColorStop(1, 'rgba(20, 40, 120, 0)');
+    ctx.fillStyle = screenGlow;
+    ctx.fillRect(0, 0, 1920, 1080);
+    
+    // Vignette (darken edges)
+    const vignetteGrad = ctx.createRadialGradient(960, 540, 500, 960, 540, 1200);
+    vignetteGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+    vignetteGrad.addColorStop(1, 'rgba(0, 0, 0, 0.4)');
+    ctx.fillStyle = vignetteGrad;
+    ctx.fillRect(0, 0, 1920, 1080);
+    
+    function downloadImage() {
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/jpeg', 0.95);
+      link.download = 'scene-04-statistic-bg.jpg';
+      link.click();
+    }
+  </script>
+</body>
+</html>

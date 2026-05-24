@@ -31,6 +31,7 @@ const Root: React.FC = () => (
         stat: '2 / 3',
         description: 'der Jugendlichen in Deutschland nutzen KI-Chatbots wöchentlich.',
         source: 'Bitkom 2025',
+        backgroundImage: 'assets/2026-05-12/ki-risiken-kinder/final-assets/scene-04-statistic-bg.jpg',
         durationInFrames: 210,
       }}
     />
