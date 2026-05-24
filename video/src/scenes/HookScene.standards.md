@@ -36,10 +36,10 @@ The component is designed to feel like the opening shot of a modern documentary 
 ## Composition Standards
 
 ### Positioning
-- **Left margin:** 120px (breathing room from edge)
-- **Bottom margin:** 140px (clear of lower-third danger zone)
-- **Placement:** Lower-left third of frame
-- **Avoid:** Center-bottom, centered text, symmetrical layouts
+- **Left margin:** 160px (intentional breathing room, centered in lower-left area)
+- **Bottom margin:** 110px (slightly higher in frame for better visual balance)
+- **Placement:** Lower-left third of frame with intentional spacing
+- **Avoid:** Center-bottom, centered text, symmetrical layouts, edge-hugging text
 
 ### Visual Hierarchy
 - **Hallway image:** Primary emotional anchor (not secondary)
@@ -64,8 +64,10 @@ The component is designed to feel like the opening shot of a modern documentary 
 - **Easing:** `Easing.inOut(Easing.cubic)` (natural, no bounce)
 
 ### Text Fades
-- **Fade duration:** 15 frames (0.5 seconds @ 30fps)
-- **Easing:** `Easing.out(Easing.cubic)` (natural exit)
+- **Fade-in duration:** 21–24 frames (0.7–0.8 seconds @ 30fps) for slow atmospheric entry
+- **Fade-out duration:** 18–30 frames (0.6–1.0 seconds @ 30fps) for gentle exit
+- **Easing:** `Easing.inOut(Easing.quad)` (smooth, atmospheric, not UI-like)
+- **Philosophy:** Fades should feel cinematic and emotional, not instant or snappy
 - **No bounce, snap, or overshoot**
 
 ### Motion Philosophy
@@ -84,27 +86,33 @@ The component is designed to feel like the opening shot of a modern documentary 
 ### Text Timing (Frame-based)
 
 #### Line 1 ("Sie ist ruhig." or similar)
-- **Fade in:** Frames 15–30 (15 frames = 0.5s)
-- **Display:** Frames 30–105 (75 frames = 2.5s emotional hold)
-- **Fade out:** Frames 105–120 (15 frames = 0.5s)
-- **Total:** 105 frames (3.5 seconds)
+- **Fade in:** Frames 15–36 (21 frames = 0.7s, slow atmospheric entry)
+- **Display:** Frames 36–90 (54 frames = 1.8s emotional hold)
+- **Fade out:** Frames 90–108 (18 frames = 0.6s, gentle exit)
+- **Total:** 93 frames (3.1 seconds)
+
+#### Emotional Pause
+- **Frames 108–126:** 18 frames (0.6s, breath of silence between texts)
 
 #### Line 2 ("Du hast deinen Abend." or similar)
-- **Fade in:** Frames 105–120 (15 frames = 0.5s, seamless from line 1 fade-out)
-- **Display:** Frames 120–180 (60 frames = 2s emotional hold)
-- **Fade out:** Frames 180–195 (15 frames = 0.5s)
-- **Total:** 90 frames (3 seconds)
+- **Fade in:** Frames 126–150 (24 frames = 0.8s, slow atmospheric entry)
+- **Display:** Frames 150–180 (30 frames = 1.0s emotional hold)
+- **Fade out:** Frames 180–210 (30 frames = 1.0s, extended gentle exit)
+- **Total:** 84 frames (2.8 seconds)
 
-#### Final Hold
-- **Frames 195–210:** 15 frames (0.5s) silence before transition
-- **Fade to black or next scene**
+#### Final Transition
+- **Frame 210:** Seamless fade-out into next scene or silence
+- **Philosophy:** Both text elements fade to black naturally, not cut**
 
 ### Emotional Pacing
-- **0–15 frames:** Hallway fades in (establishes setting)
-- **15–30 frames:** First text fades in (recognition moment)
-- **30–105 frames:** Emotional resonance (let the recognition land)
-- **105–195 frames:** Second text echoes first (completion, resolution)
-- **195–210 frames:** Quiet reflection (prepare for next scene)
+- **0–15 frames:** Hallway already visible (establishes setting, no delay)
+- **15–36 frames:** First text fades in very slowly (0.7s, recognition moment)
+- **36–90 frames:** Emotional hold (1.8s, let the recognition settle)
+- **90–108 frames:** First text fades out gently (0.6s, completion)
+- **108–126 frames:** Emotional pause, silence (0.6s, breath between texts)
+- **126–150 frames:** Second text fades in slowly (0.8s, reflection enters)
+- **150–180 frames:** Emotional hold (1.0s, let the echo resonate)
+- **180–210 frames:** Second text fades out (1.0s, gentle resolution into next scene)
 
 ---
 

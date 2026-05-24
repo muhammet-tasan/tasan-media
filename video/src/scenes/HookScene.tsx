@@ -41,27 +41,29 @@ export const HookScene: React.FC<HookSceneProps> = ({
     easing: Easing.inOut(Easing.cubic),
   });
 
-  // Line 1: fade in ~0.5s (15 frames), hold ~2.5s, fade out ~0.5s (15 frames)
+  // Line 1: slow atmospheric fade-in 0.7s, hold 1.8s, slow fade-out 0.6s
+  // Frames: fade-in 15-36 (0.7s), display 36-90 (1.8s), fade-out 90-108 (0.6s)
   const line1Opacity = interpolate(
     frame,
-    [15, 30, 105, 120],
+    [15, 36, 90, 108],
     [0, 1, 1, 0],
     {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
-      easing: Easing.out(Easing.cubic),
+      easing: Easing.inOut(Easing.quad),
     }
   );
 
-  // Line 2: fade in ~0.5s (15 frames) starting at frame 105, hold ~1.5s, fade out ~0.5s (15 frames)
+  // Line 2: slow atmospheric fade-in 0.8s, hold 1.0s, slow fade-out 1.0s
+  // Frames: pause 108-126, fade-in 126-150 (0.8s), display 150-180 (1.0s), fade-out 180-210 (1.0s)
   const line2Opacity = interpolate(
     frame,
-    [105, 120, 180, 195],
+    [126, 150, 180, 210],
     [0, 1, 1, 0],
     {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
-      easing: Easing.out(Easing.cubic),
+      easing: Easing.inOut(Easing.quad),
     }
   );
 
@@ -90,12 +92,12 @@ export const HookScene: React.FC<HookSceneProps> = ({
         <VignetteOverlay opacity={0.35} strength={0.65} />
       </AbsoluteFill>
 
-      {/* Line 1: "Sie ist ruhig." — 104pt bold, lower-left tasan-media standard */}
+      {/* Line 1: "Sie ist ruhig." — 104pt bold, intentional lower-left composition */}
       <div
         style={{
           position: 'absolute',
-          bottom: 140,
-          left: 120,
+          bottom: 110,
+          left: 160,
           maxWidth: 672,
           opacity: line1Opacity,
           fontSize: 104,
@@ -110,12 +112,12 @@ export const HookScene: React.FC<HookSceneProps> = ({
         {line1}
       </div>
 
-      {/* Line 2: "Du hast deinen Abend." — Same 104pt bold lower-left */}
+      {/* Line 2: "Du hast deinen Abend." — Same 104pt bold, intentional placement */}
       <div
         style={{
           position: 'absolute',
-          bottom: 140,
-          left: 120,
+          bottom: 110,
+          left: 160,
           maxWidth: 672,
           opacity: line2Opacity,
           fontSize: 104,
