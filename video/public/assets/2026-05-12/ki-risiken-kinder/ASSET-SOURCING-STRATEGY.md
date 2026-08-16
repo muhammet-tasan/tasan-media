@@ -249,6 +249,51 @@ This workflow becomes a **pattern for all future scenes**:
 
 ---
 
+## Lessons Learned — Video B-Roll Download & Verification (2026-08-16)
+
+First real run of the sourcing → download → technical-verify → visual-verify loop for stock *video* (not just stills), done for Scene 1's 5 B-roll clips. Findings worth carrying into any future automated agent that does this work.
+
+### Downloading without an API key
+Both Pexels and Pixabay pages expose the direct CDN URL for their own free-download tiers in the page's static HTML (no JS execution needed) — e.g. `https://videos.pexels.com/video-files/{id}/{id}-hd_1920_1080_25fps.mp4` and `https://cdn.pixabay.com/video/.../{id}-{hash}_large.mp4`. Fetching the page with a normal browser `User-Agent` and grep-ing for these patterns reliably gets the same file the page's own "Free Download" button serves — this is a licensed direct download, not scraping content/data, and stays inside each platform's stated free-license terms.
+
+**Pitfall found and fixed:** a Pexels search-results/video page embeds URLs for *several* videos (related-videos rail, autoplay-next, etc.), not just the one in the page's own slug. **Always filter the extracted URLs to the ones whose path segment matches the exact numeric ID in the page's own URL** (e.g. only `video-files/7986624/...` on the `.../video/some-slug-7986624/` page) — grabbing the first match without this filter downloads the wrong clip.
+
+**Pixabay caveat:** the static page HTML only exposes one size tier ("large") without an API key — higher explicit tiers shown in the on-page UI require either JS-driven interaction or the Pixabay API. In this run the "large" tier still turned out to be true 4K on both clips (confirmed by ffprobe), so it was sufficient — but don't assume the tier name promises a specific resolution; always verify the downloaded file, not the URL or page text.
+
+### Verifying technical metadata authoritatively
+Page-listed resolution/fps/duration (and even the shortlist notes gathered during candidate research) are frequently **wrong or unconfirmed** — several candidates researched this round said "duration: not confirmed" or gave resolution as a guess from thumbnail size. The only reliable source is the downloaded file itself.
+
+`ffprobe` (part of ffmpeg) gives authoritative width/height/fps/duration/codec in one call:
+```
+ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate,codec_name,duration -show_entries format=duration,format_name,size -of default=noprint_wrappers=1 <file>
+```
+This machine has no standalone ffmpeg/ffprobe install, but one was found bundled with an unrelated installed application (`C:\Program Files\Wondershare\Recoverit\ffmpeg.exe` / `ffprobe.exe`) and worked fine. **A future automated pipeline should not depend on finding a stray bundled binary** — it should declare ffmpeg/ffprobe as an explicit tool dependency (e.g. via a pinned static build or a documented install step), not assume one is present on the machine.
+
+### Verifying visual content — text descriptions are not enough
+Every qualitative judgment made from page text/tags in the earlier candidate-research round (title, description, uploader-catalog pattern) needed to be re-checked against actual extracted frames before being trusted for a final decision. Two real failures only surfaced this way:
+1. **Regional/stylistic bias baked into an entire uploader's catalog, not just one clip.** Shot 5's candidate and its "same series" backup both turned out to show unmistakably Asian (likely Chinese) residential-tower architecture, despite Pexels tags giving no hint of this. Checking only the primary candidate and trusting a "same uploader, same series" backup as independent verification would have missed this — **each candidate needs its own frame check, and a backup from the same uploader/series is not an independent check.**
+2. **"Matched pair" (same uploader, adjacent IDs, same shoot day) does not guarantee the same physical setup.** Shot 4's two "matched" clips turned out to use different phone-holding setups (handheld-near-face vs. lying-flat-on-desk) and different on-screen content (chat UI vs. photo grid) — usable, but not the seamless pair the metadata pattern implied.
+
+**Practical technique:** extract 2–4 frames per clip at different timestamps with `ffmpeg -ss <t> -i <file> -frames:v 1 -q:v 3 <out>.jpg` and inspect them directly — cheap, fast, and caught both failures above that no amount of reading page text would have.
+
+### Checklist for future automated sourcing agents
+- [ ] Match extracted CDN URLs to the exact page ID before downloading — don't trust "first match."
+- [ ] Verify every technical spec (resolution/fps/duration/format) from the downloaded file via `ffprobe`, never from page text or thumbnails.
+- [ ] Extract and inspect real frames for every *individual* candidate, including "same series" backups — don't extend one candidate's visual verdict to its series-mates.
+- [ ] For any "matched pair / multi-beat" asset claim, verify the physical setup (framing, distance, on-screen content) matches across both clips, not just the uploader/series metadata.
+- [ ] Treat "lighting/mood/time-of-day" claims as needing a visual check specifically — tags and titles (e.g. "golden hour," "evening," "cozy") are inconsistently applied by uploaders.
+
+### Follow-up: re-sourcing Shot 5 after a geographic-plausibility failure (2026-08-16)
+
+When a "building with many lit windows at night" candidate failed the European-context check (see production plan), the re-search surfaced a pattern worth keeping:
+
+- **Single-building, ground-level "apartment building windows lit at night" searches over-index on non-European high-rise inventory** on Pexels/Pixabay (this round found Iranian- and South/Southeast-Asian-coded towers again, on top of the original rejected candidate). This appears to be a genuine supply-side skew in what's available under those generic English search terms, not a search-technique problem.
+- **Explicit city/country name searches (e.g. "Warsaw," "Halifax," "Berlin") combined with a place name in the result's own tags are a much more reliable plausibility signal** than architecture-style guessing from a thumbnail — trust a tagged, named, real city over a visually-guessed "looks European enough."
+- **Wide aerial/drone neighbourhood shots turned out to be a better source of verifiably-placed, night-lit, non-touristy residential content than single-building facades.** Ground-level European "apartment building" search results skewed either (a) daytime Old-Town tourist streets with visible shop signage/text (fails a "no visible text/logos" requirement on its own), or (b) the same non-European high-rise inventory as above. A named-city aerial drone shot of an ordinary neighbourhood avoided both failure modes.
+- **A confirmed real-world location does not guarantee the shot delivers the needed *lighting condition*.** One strong Warsaw candidate was unambiguously, verifiably Polish (tagged, recognizable Central European postwar architecture) but stayed in full sunset daylight for its entire runtime with almost no windows actually illuminated — geographic plausibility and lighting/mood plausibility are two independent checks, both required, neither implies the other.
+
+---
+
 ## Notes
 
 - This image will be heavily treated in StatisticScene: blurred, darkened (50%), overlaid with gradients, vignettes, grain
