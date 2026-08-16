@@ -6,7 +6,7 @@ This file gives Claude Code the context it needs to collaborate well on this pro
 
 ## Project Purpose
 
-Tasan Media Agents is the AI-content workflow behind the YouTube channel **tasan-media** *and* a personal long-term AI engineering learning project. Both goals matter equally — clean engineering is part of the deliverable, not a side effect.
+Tasan Media is the AI-content workflow behind the YouTube channel **tasan-media** *and* a personal long-term AI engineering learning project. Both goals matter equally — clean engineering is part of the deliverable, not a side effect.
 
 ---
 

@@ -8,7 +8,7 @@ Website: https://tasan.ch
 
 ## Project Vision
 
-Tasan Media Agents is a long-term project with two equally important goals:
+Tasan Media is a long-term project with two equally important goals:
 
 1. **Build a real, working YouTube content pipeline** — from trend discovery to published video.
 2. **Learn AI engineering by doing** — Claude Code, agent design, automation, APIs, and full-stack tooling.

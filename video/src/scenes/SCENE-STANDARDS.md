@@ -235,27 +235,38 @@ Each scene component should:
 
 ## Reference Values (tasanMediaStyle.ts Exports)
 
+`sceneStandards` is the single source of truth — scene components import from it instead of
+hardcoding pixel/frame values. Values are grouped per scene type since each scene has its own
+visual language (see "What These Standards Are NOT" below).
+
 ```typescript
 export const sceneStandards = {
-  // Typography
   typography: {
-    primary: { size: 112, weight: 700, lineHeight: 1.0, letterSpacing: -2 },
-    secondary: { size: 48, weight: 400, lineHeight: 1.2, letterSpacing: 0 },
-    caption: { size: 24, weight: 400, lineHeight: 1.4, letterSpacing: 0.5 },
+    hookPrimary: { size: 112, weight: 700, lineHeight: 1.0, letterSpacing: -2, color: '#F5F2EC', shadowColor: 'rgba(0, 0, 0, 0.35)', shadowBlur: 20 },
+    secondary: { size: 48, weight: 400, lineHeight: 1.2, letterSpacing: 0 },       // reserved for future scenes
+    caption: { size: 24, weight: 400, lineHeight: 1.4, letterSpacing: 0.5 },       // reserved for future scenes
+    statisticPrimary: { size: 160, weight: 700, lineHeight: 0.95, letterSpacing: -3, color: '#F5F2EC', shadowColor: 'rgba(0, 0, 0, 0.45)', shadowBlur: 24 },
+    statisticDescription: { size: 52, weight: 400, lineHeight: 1.25, letterSpacing: 0, color: '#F5F2EC', shadowColor: 'rgba(0, 0, 0, 0.35)', shadowBlur: 16 },
+    statisticSource: { size: 24, weight: 400, lineHeight: 1.4, letterSpacing: 0.5, color: '#F5F2EC', opacityMultiplier: 0.75, shadowBlur: 0 },
   },
-  // Composition
   positioning: {
-    lowerLeftThird: { left: 180, bottom: 190, maxWidth: 780 },
+    lowerLeftThird: { left: 180, bottom: 190, maxWidth: 780, textAlign: 'left' },  // HookScene
+    statistic: {                                                                   // StatisticScene
+      stat: { left: 260, bottom: 480, maxWidth: 900 },
+      description: { left: 260, bottom: 310, maxWidth: 820 },
+      source: { right: 260, bottom: 100 },
+    },
   },
-  // Motion
   motion: {
-    fadeIn: 18,      // frames (0.6s @ 30fps)
-    fadeOut: 18,
-    pause: 21,       // frames (0.7s @ 30fps)
-    minHold: 45,     // frames (1.5s @ 30fps)
-    kenBurnsZoom: 0.015, // 1.5% push-in
+    bgFadeIn: 15,        // frames (0.5s), background fade-in, shared
+    fadeIn: 18,          // frames (0.6s), text fade-in
+    fadeOut: 18,         // frames (0.6s), text fade-out
+    primaryHold: 51,     // frames (1.7s), primary text hold
+    pause: 21,           // frames (0.7s), breath between elements
+    minHold: 45,         // frames (1.5s), minimum hold duration
+    kenBurnsZoom: 0.015, // HookScene: 1.5% push-in
+    ambientDrift: 0.008, // StatisticScene: 0.8% drift (more subtle)
   },
-  // Scene Duration
   duration: {
     hook: 210,       // 7 seconds
     statistic: 210,  // 7 seconds
@@ -264,19 +275,14 @@ export const sceneStandards = {
     action: 150,     // 5 seconds
     ending: 120,     // 4 seconds
   },
-  // Overlays
   overlays: {
-    gradient: { direction: 'bottom', opacity: 0.48 },
-    vignette: { opacity: 0.25, strength: 0.55 },
-    grain: { opacity: 0.08, scale: 1 },
-    textReadabilityGradient: { opacity: 0.24 }, // left-bottom
-  },
-  // Colors
-  colors: {
-    textPrimary: '#F5F2EC',
-    textSecondary: '#F5F2EC',
-    shadowColor: 'rgba(0, 0, 0, 0.35)',
-    shadowBlur: 20,
+    bottomGradient: { direction: 'bottom', opacity: 0.48 },              // HookScene
+    textReadabilityGradient: { opacity: 0.24 },                          // HookScene, left-bottom
+    statisticGradient: { direction: 'both', opacity: 0.62 },             // StatisticScene
+    statisticReadabilityGradient: { opacity: 0.3 },                      // StatisticScene, center-left
+    statisticBackgroundBrightness: 50,                                   // StatisticScene B-roll darkening
+    vignette: { opacity: 0.25, strength: 0.55 },                         // shared
+    grain: { opacity: 0.08, scale: 1 },                                  // shared
   },
 };
 ```

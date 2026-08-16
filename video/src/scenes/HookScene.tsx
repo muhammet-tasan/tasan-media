@@ -4,10 +4,12 @@ import { BackgroundImage } from '../components/BackgroundImage';
 import { SoftGradientOverlay } from '../components/SoftGradientOverlay';
 import { VignetteOverlay } from '../components/VignetteOverlay';
 import { GrainOverlay } from '../components/GrainOverlay';
-import { FadeIn } from '../components/FadeIn';
-import { colors } from '../styles/colors';
-import { typography } from '../styles/typography';
-import { style } from '../styles/tasanMediaStyle';
+import { colors, typography, sceneStandards } from '../styles/tasanMediaStyle';
+
+const { hookPrimary } = sceneStandards.typography;
+const { lowerLeftThird } = sceneStandards.positioning;
+const { bottomGradient, textReadabilityGradient, vignette, grain } = sceneStandards.overlays;
+const { bgFadeIn, fadeIn, primaryHold, pause, kenBurnsZoom } = sceneStandards.motion;
 
 interface HookSceneProps {
   line1: string;
@@ -29,24 +31,24 @@ export const HookScene: React.FC<HookSceneProps> = ({
 }) => {
   const frame = useCurrentFrame();
 
-  // Background fade-in: frames 0-15 (0.5s)
-  const bgOpacity = interpolate(frame, [0, 15], [0, 1], {
+  // Text pacing timeline, derived from sceneStandards.motion (see SCENE-STANDARDS.md)
+  const fade1Start = bgFadeIn;                     // 15
+  const fade1End = fade1Start + fadeIn;             // 33
+  const hold1End = fade1End + primaryHold;          // 84
+  const fadeOut1End = hold1End + fadeIn;            // 102
+  const fade2Start = fadeOut1End + pause;           // 123
+  const fade2End = fade2Start + fadeIn;             // 141
+
+  // Background fade-in
+  const bgOpacity = interpolate(frame, [0, bgFadeIn], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  // Ken Burns breathing zoom: 1.0 → 1.015 (1.5% extremely subtle push-in)
-  const zoomScale = interpolate(frame, [15, durationInFrames], [1.0, 1.015], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-    easing: Easing.inOut(Easing.exp),
-  });
-
-  // Line 1: fade-in 0.5s (frame 15, 18 frames = 0.6s), hold ~1.2s, fade-out ~2.8s (18 frames = 0.6s), gone ~3.5s
-  // Frames: fade-in 15-33 (18 frames), display 33-84 (51 frames), fade-out 84-102 (18 frames)
+  // Line 1: fade-in, emotional hold, fade-out
   const line1Opacity = interpolate(
     frame,
-    [15, 33, 84, 102],
+    [fade1Start, fade1End, hold1End, fadeOut1End],
     [0, 1, 1, 0],
     {
       extrapolateLeft: 'clamp',
@@ -55,11 +57,10 @@ export const HookScene: React.FC<HookSceneProps> = ({
     }
   );
 
-  // Line 2: fade-in start ~4.1s (frame 123, 18 frames = 0.6s), hold until end
-  // Frames: fade-in 123-141 (18 frames), hold 141-210 (no fade-out)
+  // Line 2: fade-in after emotional pause, hold until scene end
   const line2Opacity = interpolate(
     frame,
-    [123, 141, 210],
+    [fade2Start, fade2End, durationInFrames],
     [0, 1, 1],
     {
       extrapolateLeft: 'clamp',
@@ -77,25 +78,25 @@ export const HookScene: React.FC<HookSceneProps> = ({
             src={backgroundImage}
             brightness={100}
             zoomFrom={1.0}
-            zoomTo={1.015}
-            durationInFrames={durationInFrames - 15}
+            zoomTo={1.0 + kenBurnsZoom}
+            durationInFrames={durationInFrames - bgFadeIn}
           />
         </AbsoluteFill>
       ) : null}
 
       {/* Gradient overlay: gentle bottom-only for text readability (preserves left side) */}
       <AbsoluteFill style={{ opacity: bgOpacity }}>
-        <SoftGradientOverlay direction="bottom" opacity={0.48} />
+        <SoftGradientOverlay direction={bottomGradient.direction} opacity={bottomGradient.opacity} />
       </AbsoluteFill>
 
       {/* Subtle vignette for cinematic focus (premium aesthetic) */}
       <AbsoluteFill style={{ opacity: bgOpacity }}>
-        <VignetteOverlay opacity={0.25} strength={0.55} />
+        <VignetteOverlay opacity={vignette.opacity} strength={vignette.strength} />
       </AbsoluteFill>
 
       {/* Film grain texture for premium documentary aesthetic */}
       <AbsoluteFill style={{ opacity: bgOpacity }}>
-        <GrainOverlay opacity={0.08} scale={1} />
+        <GrainOverlay opacity={grain.opacity} scale={grain.scale} />
       </AbsoluteFill>
 
       {/* Soft left-bottom readability gradient — darker near typography, invisible transition to image */}
@@ -108,8 +109,8 @@ export const HookScene: React.FC<HookSceneProps> = ({
           height: '55%',
           background: `linear-gradient(
             to right top,
-            rgba(0, 0, 0, 0.24) 0%,
-            rgba(0, 0, 0, 0.12) 50%,
+            rgba(0, 0, 0, ${textReadabilityGradient.opacity}) 0%,
+            rgba(0, 0, 0, ${textReadabilityGradient.opacity / 2}) 50%,
             rgba(0, 0, 0, 0) 100%
           )`,
           pointerEvents: 'none',
@@ -117,43 +118,43 @@ export const HookScene: React.FC<HookSceneProps> = ({
         }}
       />
 
-      {/* Line 1: "Sie ist ruhig." — 112pt bold, intentional lower-left cinematic composition */}
+      {/* Line 1: "Sie ist ruhig." — intentional lower-left cinematic composition */}
       <div
         style={{
           position: 'absolute',
-          bottom: 190,
-          left: 180,
-          maxWidth: 780,
-          textAlign: 'left',
+          bottom: lowerLeftThird.bottom,
+          left: lowerLeftThird.left,
+          maxWidth: lowerLeftThird.maxWidth,
+          textAlign: lowerLeftThird.textAlign,
           opacity: line1Opacity,
-          fontSize: 112,
+          fontSize: hookPrimary.size,
           fontFamily: typography.family,
-          fontWeight: 700,
-          color: '#F5F2EC',
-          lineHeight: 1.0,
-          letterSpacing: '-2px',
-          textShadow: '0 20px rgba(0, 0, 0, 0.35)',
+          fontWeight: hookPrimary.weight,
+          color: hookPrimary.color,
+          lineHeight: hookPrimary.lineHeight,
+          letterSpacing: `${hookPrimary.letterSpacing}px`,
+          textShadow: `0 ${hookPrimary.shadowBlur}px ${hookPrimary.shadowColor}`,
         }}
       >
         {line1}
       </div>
 
-      {/* Line 2: "Du hast deinen Abend." — Same 112pt bold, intentional cinematic placement */}
+      {/* Line 2: "Du hast deinen Abend." — same standard, intentional cinematic placement */}
       <div
         style={{
           position: 'absolute',
-          bottom: 190,
-          left: 180,
-          maxWidth: 780,
-          textAlign: 'left',
+          bottom: lowerLeftThird.bottom,
+          left: lowerLeftThird.left,
+          maxWidth: lowerLeftThird.maxWidth,
+          textAlign: lowerLeftThird.textAlign,
           opacity: line2Opacity,
-          fontSize: 112,
+          fontSize: hookPrimary.size,
           fontFamily: typography.family,
-          fontWeight: 700,
-          color: '#F5F2EC',
-          lineHeight: 1.0,
-          letterSpacing: '-2px',
-          textShadow: '0 20px rgba(0, 0, 0, 0.35)',
+          fontWeight: hookPrimary.weight,
+          color: hookPrimary.color,
+          lineHeight: hookPrimary.lineHeight,
+          letterSpacing: `${hookPrimary.letterSpacing}px`,
+          textShadow: `0 ${hookPrimary.shadowBlur}px ${hookPrimary.shadowColor}`,
         }}
       >
         {line2}

@@ -1,6 +1,6 @@
 # scripts/
 
-Python automation for the tasan-media-agents pipeline.
+Python automation for the tasan-media pipeline.
 
 This folder is **intentionally empty for now** — scripts will be added incrementally as real needs appear, not preemptively.
 

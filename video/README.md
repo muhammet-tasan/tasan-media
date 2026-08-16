@@ -1,6 +1,6 @@
 # Remotion Video Rendering — tasan-media
 
-Programmatic video rendering for tasan-media YouTube channel. This project uses [Remotion](https://www.remotion.dev/) to generate production-ready MP4 video from React components.
+Programmatic video rendering for the tasan-media YouTube channel. This project uses [Remotion](https://www.remotion.dev/) to generate production-ready MP4 video from React/TypeScript components — no manual Canva/slide design.
 
 ## Prerequisites
 
@@ -14,8 +14,6 @@ cd video
 npm install
 ```
 
-This installs Remotion, React, and development dependencies.
-
 ## Quick Start
 
 ### 1. Preview in Browser (Hotload)
@@ -26,20 +24,21 @@ npm start
 
 Opens Remotion Studio at `http://localhost:3000`. Shows all registered compositions with live preview. Hot-reloads when you edit code.
 
-### 2. Render a Single Scene to MP4
+### 2. Render a Composition to MP4
+
+Compositions are registered by `id` in [src/index.tsx](src/index.tsx). Pass the id and an output path after `--`:
 
 ```bash
-npm run render StatScene -- --output renders/scene-04-stat.mp4
+npm run render -- Scene01Hook --output renders/2026-05-12/ki-risiken-kinder/scene-01-hook.mp4
+npm run render -- Scene04Statistic --output renders/2026-05-12/ki-risiken-kinder/scene-04-statistic.mp4
 ```
 
-Outputs to `renders/scene-04-stat.mp4` (1920×1080, 30 FPS, H.264).
+Output: 1920×1080, 30 FPS, H.264.
 
 ### 3. Render with Custom Props
 
 ```bash
-npm run render StatScene -- \
-  --props '{"stat":"66 %","description":"test"}' \
-  --output renders/custom.mp4
+npm run render -- Scene01Hook --props '{"line1":"Sie ist ruhig.","line2":"Du hast deinen Abend."}' --output renders/custom.mp4
 ```
 
 ## Project Structure
@@ -47,24 +46,30 @@ npm run render StatScene -- \
 ```
 video/
 ├── src/
-│   ├── Root.tsx                          # Registers all compositions
+│   ├── index.tsx                          # Entry point — registers all compositions (registerRoot)
 │   ├── scenes/
-│   │   ├── StatScene.tsx                 # MVP: Statistic slide
-│   │   ├── QuoteScene.tsx                # (coming soon)
-│   │   ├── HookScene.tsx                 # (coming soon)
-│   │   └── ...
+│   │   ├── HookScene.tsx                  # Documentary opening hook (production quality)
+│   │   ├── HookScene.standards.md         # Detailed HookScene specification
+│   │   ├── StatisticScene.tsx             # Statistic + description + B-roll (production quality)
+│   │   ├── StatisticScene.standards.md    # Detailed StatisticScene specification
+│   │   └── SCENE-STANDARDS.md             # Shared patterns for all scene types
 │   ├── components/
-│   │   ├── FadeIn.tsx                    # Fade-in animation wrapper
-│   │   ├── SlideUp.tsx                   # Slide-up animation wrapper
-│   │   └── CrossfadeText.tsx             # (coming soon)
-│   ├── styles/
-│   │   ├── colors.ts                     # Color palette (tasan-media brand)
-│   │   ├── typography.ts                 # Font sizes & weights (Manrope)
-│   │   └── motion.ts                     # Animation timing presets
-│   └── compositions/
-│       └── ki-risiken/
-│           └── scenes.ts                 # Scene data for KI-Risiken video
-├── renders/                              # Exported MP4s (gitignored)
+│   │   ├── BackgroundImage.tsx            # Full-canvas image with Ken Burns zoom + brightness
+│   │   ├── SoftGradientOverlay.tsx        # Gradient overlay for text readability
+│   │   ├── VignetteOverlay.tsx            # Radial vignette for cinematic focus
+│   │   ├── GrainOverlay.tsx               # SVG film grain texture
+│   │   ├── FadeIn.tsx                     # Opacity fade wrapper (reserved for future scenes)
+│   │   └── SlideUp.tsx                    # Fade + translate wrapper (reserved for future scenes)
+│   └── styles/
+│       ├── tasanMediaStyle.ts             # Unified entry point — re-exports colors/typography/motion,
+│       │                                  # plus `style` (safe areas/canvas specs) and `sceneStandards`
+│       │                                  # (concrete per-scene-type values — the single source of truth)
+│       ├── colors.ts                      # Color palette
+│       ├── typography.ts                  # Font family + size scale (Manrope)
+│       └── motion.ts                      # Generic animation timing presets
+├── public/
+│   └── assets/YYYY-MM-DD/<topic-slug>/    # visual-style-guide.md, asset-prompts.md, final-assets/
+├── renders/                                # Exported MP4s (gitignored)
 ├── package.json
 ├── tsconfig.json
 ├── remotion.config.ts
@@ -73,70 +78,51 @@ video/
 
 ## Design System
 
-All visual elements come from the design system in `src/styles/`:
-
-- **Colors:** `src/styles/colors.ts` — exact hex values (no custom colors allowed)
-- **Typography:** `src/styles/typography.ts` — Manrope font sizes
-- **Motion:** `src/styles/motion.ts` — animation timing in frames (at 30 FPS)
-
-### Using Design System in Components
+Scene components import everything from `src/styles/tasanMediaStyle.ts`:
 
 ```typescript
-import { colors } from '../styles/colors';
-import { typography } from '../styles/typography';
-import { motion } from '../styles/motion';
+import { colors, typography, sceneStandards } from '../styles/tasanMediaStyle';
 
-// In your component:
-<div style={{ backgroundColor: colors.warmWhite, fontSize: typography.sizes.heading }}>
-  Text here
-</div>
+const { hookPrimary } = sceneStandards.typography;
+const { lowerLeftThird } = sceneStandards.positioning;
 ```
+
+- **Colors:** `sceneStandards` typography entries carry their own color (`#F5F2EC` warm off-white); `colors.ts` holds background/base colors (e.g. `colors.darkNavy`).
+- **Typography:** Manrope only. Concrete per-scene sizes/weights/letter-spacing live in `sceneStandards.typography` (e.g. `hookPrimary` = 112px, `statisticPrimary` = 160px).
+- **Positioning:** `sceneStandards.positioning` holds the exact px composition values per scene type (e.g. `lowerLeftThird` for HookScene, `statistic` for StatisticScene).
+- **Motion:** `sceneStandards.motion` holds shared frame timings (fade durations, holds, pauses) and per-scene zoom amounts (`kenBurnsZoom`, `ambientDrift`).
+- **Overlays:** `sceneStandards.overlays` holds gradient/vignette/grain settings per scene type.
+
+**Rule:** scene components should read values from `sceneStandards`, not hardcode pixels/frames directly — this keeps the documented standards in [SCENE-STANDARDS.md](src/scenes/SCENE-STANDARDS.md) and the actual rendered output in sync. See `HookScene.tsx` and `StatisticScene.tsx` for the pattern.
 
 ## Scene Components
 
-Each scene type is a React component that renders a specific layout:
+| Component | Status | Standards doc |
+|-----------|--------|----------------|
+| **HookScene** | Production quality | [HookScene.standards.md](src/scenes/HookScene.standards.md) |
+| **StatisticScene** | Production quality | [StatisticScene.standards.md](src/scenes/StatisticScene.standards.md) |
+| **QuoteScene** | Not yet implemented | — |
+| **InsightScene** | Not yet implemented | — |
+| **ActionScene** | Not yet implemented | — |
+| **EndingScene** | Not yet implemented | — |
 
-| Component | Props | Example |
-|-----------|-------|---------|
-| **StatScene** | `stat`, `description`, `source`, `backgroundColor` | Large number with supporting text |
-| **QuoteScene** | `quote`, `subtext`, `backgroundColor` | (not yet implemented) |
-| **HookScene** | `backgroundImage`, `text`, `position` | (not yet implemented) |
-| **InsightScene** | `title`, `subtitle`, `backgroundColor` | (not yet implemented) |
-| **ResourceScene** | `resourceName`, `instruction`, `backgroundColor` | (not yet implemented) |
+Each scene type has its **own visual language** (typography size, composition, overlay intensity) rather than a single shared template — see the comparison table in `StatisticScene.standards.md` and the philosophy section in `SCENE-STANDARDS.md`.
 
-## Animation Primitives
+## Building a New Scene
 
-Wrap components with these to add animations:
-
-```typescript
-import { FadeIn } from './components/FadeIn';
-import { SlideUp } from './components/SlideUp';
-import { motion } from './styles/motion';
-
-<FadeIn duration={motion.fadeIn.durationFrames}>
-  <div>Fades in over 0.4 seconds</div>
-</FadeIn>
-
-<SlideUp delay={motion.stagger.short} duration={motion.slideUp.durationFrames}>
-  <div>Slides up after 0.2 second delay, over 0.4 seconds</div>
-</SlideUp>
-```
-
-## Rendering Complete Videos
-
-To render all scenes from a composition sequentially:
-
-```bash
-# (Example — actual command depends on composition structure)
-npx remotion render src/Root.tsx -c KiRisiken --output renders/ki-risiken-full.mp4
-```
+1. Create `src/scenes/<Name>Scene.tsx` — props for text content, optional `backgroundImage`, `durationInFrames`.
+2. Add its values to `sceneStandards` in `tasanMediaStyle.ts` (typography/positioning/motion/overlays), then import and use them in the component instead of hardcoding numbers.
+3. Compose the overlay stack in order: `BackgroundImage` → `SoftGradientOverlay` → `VignetteOverlay` → `GrainOverlay` → any scene-specific readability gradient.
+4. Drive all text fades via `interpolate()` using the shared frame breakpoints in `sceneStandards.motion` (`bgFadeIn`, `fadeIn`, `primaryHold`, `pause`), always with `Easing.inOut(Easing.exp)`.
+5. Register the composition in `src/index.tsx` (`id`, `durationInFrames`, `fps=30`, `width=1920`, `height=1080`, `defaultProps`).
+6. Write `<Name>Scene.standards.md` documenting typography, composition, timing, and an "Is / Is Not" section, following the existing two standards docs.
 
 ## Workflow: From Script to Rendered Video
 
-1. **Script Agent** produces script (`content/scripts/YYYY-MM-DD/*.md`)
-2. **Scene Production Agent** breaks it into visual briefs (`content/scenes/YYYY-MM-DD/*.md`)
-3. **Remotion Scene Agent** converts briefs to scene data (`video/src/compositions/*/scenes.ts`)
-4. **You run** `npm run render` to generate MP4s
+1. **Script Agent** produces the approved script (`content/scripts/YYYY-MM-DD/*.md`)
+2. **Remotion Generation Agent** ([agents/remotion-generation-agent.md](../agents/remotion-generation-agent.md)) reads the script and produces: visual style guide, asset prompts, and render-ready scene components + registrations
+3. **Human sources assets** per `asset-prompts.md`, placed in `public/assets/YYYY-MM-DD/<topic-slug>/final-assets/`
+4. **You render** each scene with `npm run render -- <CompositionId> --output ...`
 5. **Human assembly in CapCut** — layer voice narration, B-roll, music, export final video
 
 ## Troubleshooting
@@ -147,39 +133,25 @@ npm install
 ```
 
 ### Studio doesn't open
-Make sure port 3000 is not in use. Or specify a different port:
+Make sure port 3000 is not in use, or specify a different port:
 ```bash
 npx remotion studio --port 3001
 ```
 
 ### Render produces black/blank video
-1. Check that `StatScene` (or other component) exists in `src/scenes/`
-2. Make sure props are valid and complete
-3. Check that styles are imported (colors, typography)
+1. Check that the composition `id` exists in `src/index.tsx`
+2. Make sure props are valid and complete (required props like `StatisticScene`'s `backgroundImage` must be set)
+3. Check that the referenced asset file actually exists under `public/assets/.../final-assets/`
 
 ### Performance issues
 - Simplify animations (fewer active elements per frame)
-- Reduce video resolution for preview (Remotion Studio handles this)
-- Use `npm run build` to create an optimized bundle before rendering
-
-## Next Steps
-
-1. **MVP Verification:** Render StatScene and verify output
-   ```bash
-   npm start
-   ```
-   Preview at http://localhost:3000, select "StatScene", verify animation and timing
-
-2. **Implement Additional Scenes:** Create QuoteScene.tsx, HookScene.tsx, etc.
-
-3. **Populate Scene Data:** Update `video/src/compositions/ki-risiken/scenes.ts` with all 13 scenes once components exist
-
-4. **Render Full Video:** Render all scenes, import into CapCut, assemble with voice + B-roll
+- Reduce preview resolution in Remotion Studio (rendering itself always uses full resolution)
+- Use `npx remotion bundle` to create an optimized bundle before batch rendering
 
 ## Reference
 
 - [Remotion Documentation](https://www.remotion.dev/docs)
 - [Remotion API](https://www.remotion.dev/docs/composition)
-- [tasan-media Design System](../../config/channel-identity.md)
-- [Scene Production Agent](../../agents/scene-production-agent.md)
-- [Remotion Scene Agent](../../agents/remotion-scene-agent.md)
+- [tasan-media Channel Identity](../config/channel-identity.md)
+- [Remotion Generation Agent](../agents/remotion-generation-agent.md)
+- [Scene Standards](src/scenes/SCENE-STANDARDS.md)

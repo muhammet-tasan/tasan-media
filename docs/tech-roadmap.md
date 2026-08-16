@@ -1,6 +1,6 @@
 # Technology Roadmap
 
-This document records the long-term technology direction for tasan-media-agents and *why* each piece was chosen. Most of these are not implemented yet — they exist here as deliberate choices for future phases.
+This document records the long-term technology direction for tasan-media and *why* each piece was chosen. Most of these are not implemented yet — they exist here as deliberate choices for future phases.
 
 The guiding rule: **introduce each technology only when a real use case demands it.**
 

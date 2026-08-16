@@ -4,8 +4,18 @@ import { BackgroundImage } from '../components/BackgroundImage';
 import { SoftGradientOverlay } from '../components/SoftGradientOverlay';
 import { VignetteOverlay } from '../components/VignetteOverlay';
 import { GrainOverlay } from '../components/GrainOverlay';
-import { colors } from '../styles/colors';
-import { typography } from '../styles/typography';
+import { colors, typography, sceneStandards } from '../styles/tasanMediaStyle';
+
+const { statisticPrimary, statisticDescription, statisticSource } = sceneStandards.typography;
+const { statistic: statisticPositioning } = sceneStandards.positioning;
+const {
+  statisticGradient,
+  statisticReadabilityGradient,
+  statisticBackgroundBrightness,
+  vignette,
+  grain,
+} = sceneStandards.overlays;
+const { bgFadeIn, fadeIn, primaryHold, pause, ambientDrift } = sceneStandards.motion;
 
 interface StatisticSceneProps {
   stat: string;                    // e.g., "2 / 3" or "66 %"
@@ -41,25 +51,24 @@ export const StatisticScene: React.FC<StatisticSceneProps> = ({
 }) => {
   const frame = useCurrentFrame();
 
-  // Background fade-in: frames 0-15 (0.5s)
-  const bgOpacity = interpolate(frame, [0, 15], [0, 1], {
+  // Text pacing timeline, derived from sceneStandards.motion (see SCENE-STANDARDS.md)
+  const fadeStart = bgFadeIn;                  // 15
+  const fadeEnd = fadeStart + fadeIn;           // 33
+  const holdEnd = fadeEnd + primaryHold;        // 84
+  const fadeOutEnd = holdEnd + fadeIn;          // 102
+  const descriptionFadeStart = fadeOutEnd + pause; // 123
+  const descriptionFadeEnd = descriptionFadeStart + fadeIn; // 141
+
+  // Background fade-in
+  const bgOpacity = interpolate(frame, [0, bgFadeIn], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  // Extremely subtle ambient drift (barely noticeable slow push-in)
-  // 1.0 → 1.008 (0.8% total movement, almost imperceptible)
-  const zoomScale = interpolate(frame, [15, durationInFrames], [1.0, 1.008], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-    easing: Easing.inOut(Easing.exp),
-  });
-
-  // Statistic: fade-in 0.5s (frame 15, 18 frames = 0.6s), hold ~1.7s, fade-out ~2.8s
-  // Frames: fade-in 15-33 (18 frames), display 33-84 (51 frames), fade-out 84-102 (18 frames)
+  // Statistic: fade-in, emotional hold, fade-out
   const statOpacity = interpolate(
     frame,
-    [15, 33, 84, 102],
+    [fadeStart, fadeEnd, holdEnd, fadeOutEnd],
     [0, 1, 1, 0],
     {
       extrapolateLeft: 'clamp',
@@ -68,11 +77,10 @@ export const StatisticScene: React.FC<StatisticSceneProps> = ({
     }
   );
 
-  // Description: fade-in start ~4.1s (frame 123, 18 frames = 0.6s), hold until end
-  // Frames: fade-in 123-141 (18 frames), hold 141-210 (no fade-out)
+  // Description: fade-in after pause, hold until scene end
   const descriptionOpacity = interpolate(
     frame,
-    [123, 141, 210],
+    [descriptionFadeStart, descriptionFadeEnd, durationInFrames],
     [0, 1, 1],
     {
       extrapolateLeft: 'clamp',
@@ -91,27 +99,27 @@ export const StatisticScene: React.FC<StatisticSceneProps> = ({
         <AbsoluteFill style={{ opacity: bgOpacity }}>
           <BackgroundImage
             src={backgroundImage}
-            brightness={50} // Heavily darkened for statistic dominance
+            brightness={statisticBackgroundBrightness}
             zoomFrom={1.0}
-            zoomTo={1.008} // Extremely subtle drift
-            durationInFrames={durationInFrames - 15}
+            zoomTo={1.0 + ambientDrift}
+            durationInFrames={durationInFrames - bgFadeIn}
           />
         </AbsoluteFill>
       ) : null}
 
       {/* Heavy gradient overlay: darker, more coverage for cinematic mood */}
       <AbsoluteFill style={{ opacity: bgOpacity }}>
-        <SoftGradientOverlay direction="both" opacity={0.62} />
+        <SoftGradientOverlay direction={statisticGradient.direction} opacity={statisticGradient.opacity} />
       </AbsoluteFill>
 
       {/* Subtle vignette for cinematic frame (same as HookScene) */}
       <AbsoluteFill style={{ opacity: bgOpacity }}>
-        <VignetteOverlay opacity={0.25} strength={0.55} />
+        <VignetteOverlay opacity={vignette.opacity} strength={vignette.strength} />
       </AbsoluteFill>
 
       {/* Film grain texture for premium documentary aesthetic */}
       <AbsoluteFill style={{ opacity: bgOpacity }}>
-        <GrainOverlay opacity={0.08} scale={1} />
+        <GrainOverlay opacity={grain.opacity} scale={grain.scale} />
       </AbsoluteFill>
 
       {/* Center-left readability gradient (larger coverage for centered composition) */}
@@ -124,8 +132,8 @@ export const StatisticScene: React.FC<StatisticSceneProps> = ({
           height: '60%',
           background: `radial-gradient(
             ellipse at 30% 50%,
-            rgba(0, 0, 0, 0.3) 0%,
-            rgba(0, 0, 0, 0.15) 40%,
+            rgba(0, 0, 0, ${statisticReadabilityGradient.opacity}) 0%,
+            rgba(0, 0, 0, ${statisticReadabilityGradient.opacity / 2}) 40%,
             rgba(0, 0, 0, 0) 100%
           )`,
           pointerEvents: 'none',
@@ -133,62 +141,62 @@ export const StatisticScene: React.FC<StatisticSceneProps> = ({
         }}
       />
 
-      {/* Statistic number: 160px bold, dominates frame with center-left positioning */}
+      {/* Statistic number: dominates frame with center-left positioning */}
       <div
         style={{
           position: 'absolute',
-          bottom: 480,
-          left: 260,
-          maxWidth: 900,
+          bottom: statisticPositioning.stat.bottom,
+          left: statisticPositioning.stat.left,
+          maxWidth: statisticPositioning.stat.maxWidth,
           textAlign: 'left',
           opacity: statOpacity,
-          fontSize: 160,
+          fontSize: statisticPrimary.size,
           fontFamily: typography.family,
-          fontWeight: 700,
-          color: '#F5F2EC',
-          lineHeight: 0.95, // Slightly tighter for cinematic presence
-          letterSpacing: '-3px', // Stronger tightening for large size
-          textShadow: '0 24px rgba(0, 0, 0, 0.45)', // Stronger shadow for dominance
+          fontWeight: statisticPrimary.weight,
+          color: statisticPrimary.color,
+          lineHeight: statisticPrimary.lineHeight,
+          letterSpacing: `${statisticPrimary.letterSpacing}px`,
+          textShadow: `0 ${statisticPrimary.shadowBlur}px ${statisticPrimary.shadowColor}`,
         }}
       >
         {stat}
       </div>
 
-      {/* Description: 52px regular, naturally positioned beneath statistic */}
+      {/* Description: naturally positioned beneath statistic */}
       <div
         style={{
           position: 'absolute',
-          bottom: 310,
-          left: 260,
-          maxWidth: 820,
+          bottom: statisticPositioning.description.bottom,
+          left: statisticPositioning.description.left,
+          maxWidth: statisticPositioning.description.maxWidth,
           textAlign: 'left',
           opacity: descriptionOpacity,
-          fontSize: 52,
+          fontSize: statisticDescription.size,
           fontFamily: typography.family,
-          fontWeight: 400,
-          color: '#F5F2EC',
-          lineHeight: 1.25,
-          letterSpacing: '0px',
-          textShadow: '0 16px rgba(0, 0, 0, 0.35)',
+          fontWeight: statisticDescription.weight,
+          color: statisticDescription.color,
+          lineHeight: statisticDescription.lineHeight,
+          letterSpacing: `${statisticDescription.letterSpacing}px`,
+          textShadow: `0 ${statisticDescription.shadowBlur}px ${statisticDescription.shadowColor}`,
         }}
       >
         {description}
       </div>
 
-      {/* Source attribution: 24px caption, bottom-right corner */}
+      {/* Source attribution: bottom-right corner */}
       {source && (
         <div
           style={{
             position: 'absolute',
-            bottom: 100,
-            right: 260,
-            opacity: sourceOpacity * 0.75, // Lighter for hierarchy
-            fontSize: 24,
+            bottom: statisticPositioning.source.bottom,
+            right: statisticPositioning.source.right,
+            opacity: sourceOpacity * statisticSource.opacityMultiplier,
+            fontSize: statisticSource.size,
             fontFamily: typography.family,
-            fontWeight: 400,
-            color: '#F5F2EC',
-            lineHeight: 1.4,
-            letterSpacing: '0.5px',
+            fontWeight: statisticSource.weight,
+            color: statisticSource.color,
+            lineHeight: statisticSource.lineHeight,
+            letterSpacing: `${statisticSource.letterSpacing}px`,
             textShadow: 'none',
           }}
         >

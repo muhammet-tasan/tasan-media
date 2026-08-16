@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "start": "remotion studio",
-    "render": "remotion render src/index.tsx StatScene --output renders/scene-04-stat.mp4"
+    "render": "remotion render src/index.tsx"
   },
   "dependencies": {
     "react": "latest",
