@@ -6,21 +6,28 @@
 
 ## Recent Updates
 
-(2026-05-25 EOD)
-- **HookScene:** Refined to production quality (112px typography, exact composition values)
-- **StatisticScene:** Complete redesign with own visual language (160px statistic, center-left, atmospheric B-roll)
-- **Scene standards:** Documented SCENE-STANDARDS.md with reusable patterns (all scene types)
-- **Asset sourcing:** Automated AI-assisted pipeline (ASSET-SOURCING-STRATEGY.md) with working example
-- **Asset cleanup:** Consolidated duplicates, single final-assets/ location per topic
-- **Session documentation:** Created docs/sessions/2026-05-25-session-summary.md for continuity
-- **Design system:** Exported sceneStandards constants for code-based standards validation
-- **Status:** Phase A complete, ready for Phase B (remaining scene types)
+(2026-08-17 EOD)
+- **Scene standards refactor (2026-08-16):** HookScene and StatisticScene now read typography, positioning, motion, and overlay values from dedicated per-scene-type entries in `sceneStandards` instead of hardcoded pixels/frames — SCENE-STANDARDS.md and rendered output stay in sync. Deprecated StatScene/TextOverlay MVP components removed (superseded by the two production scenes).
+- **Scene 1 = full Opening-Hook pilot (2026-08-16):** Scene 1 has been elevated from "one more scene" to a deliberate architecture pilot for the whole video's audio pipeline. Documented in `video/src/scenes/Scene01-Opening-Production-Plan.md`.
+- **5-shot concept locked (2026-08-16):** Approved shot list — arrival shadow, living room evening (silent), hallway push (mask-zoom, Option A), phone typing/scrolling, Halifax neighbourhood-at-night wide. Stock-only for this first video (no self-filming yet). Cut from Shot 3 → Shot 4 must land exactly on the word "Chatbot."
+- **B-roll fully sourced, verified, locked (2026-08-17):** All 5 clips downloaded and verified into `final-assets/`, documented per-asset in `ASSET-MANIFEST.md`. Shot 5's original candidate failed a European-context visual check (non-European tower architecture) and was replaced same-day with a verified Halifax, UK aerial shot after a second, explicitly-European-targeted search round. Shot 1's SFX line corrected as a direct result of the verification pass ("keys set down" dropped; door latch/click kept).
+- **Workflow decisions locked (2026-08-16):** Voice-first timing (visuals cut to VO, not the reverse); full audio (VO + ambience + score + SFX) assembled **inside Remotion**, not CapCut; no artificial cap on asset/shot count — match the script's actual beat structure.
+- **Status:** Phase A (Remotion MVP) complete. Scene 1 pilot in progress — B-roll locked, voice provider decided, voice candidate selection in progress.
+
+(2026-08-19)
+- **Voice provider decided (provisional):** ElevenLabs, chosen after comparing against Azure/Google/Amazon Polly, WellSaid Labs, Play.ht, Cartesia, Murf.ai. Rationale, comparison, and rejected alternatives documented in `content/voice/2026-08-19/scene1-voice-comparison-plan.md`.
+- **Voice candidate-selection process defined:** 4-candidate comparison workflow (selection criteria, a 30–40s test text drawn from the real script, identical starting settings for a fair comparison) documented in `content/voice/2026-08-19/scene1-voice-comparison-plan.md`. **Candidate selection itself is a human task, currently in progress** — no voice has been chosen yet.
+- **Access limitation noted:** the current ElevenLabs Voice Library is not reliably scrapeable (public page is marketing-only; authenticated app view needs login + dynamic interaction) — candidate voice names/IDs must be sourced by the human directly in the app, not invented.
 
 ## Current Phase
 
-**Phase 1 — First video production run**
+**Phase 1 — First video production run, Scene 1 as full-pipeline pilot**
 
-The full pipeline has been defined and run once end-to-end on the topic "KI-Risiken für Kinder". The architecture is stable. Next step is producing the first complete video using the new scene/voice production agents.
+The full pipeline has been defined and run once end-to-end on the topic "KI-Risiken für Kinder". The architecture is stable. Scene 1 (the opening hook) is now being built as a deliberate pilot for a bigger decision: **all audio — VO, ambience, score, SFX — will be assembled inside Remotion**, not layered in CapCut afterward. Scene 1 must prove this pipeline end-to-end (voice-first timing, multi-track `<Audio>` in Remotion, sync precision) before it's applied to the rest of the video or extended to future scene types (QuoteScene, InsightScene, ActionScene, EndingScene).
+
+**Target pipeline for this first video is stock-only** — no self-filmed B-roll — with all 5 Scene 1 shots sourced from Pexels/Pixabay/equivalent and explicitly verified for European context, matching architecture, and documentary (non-corporate-stock) quality.
+
+**CapCut is no longer a necessary part of the target pipeline.** It remains documented as a fallback/manual-assembly option (see `video/README.md`, pending an update once the full-Remotion-audio approach is validated), but the working assumption going forward is that rendering happens entirely through Remotion.
 
 ---
 
@@ -86,6 +93,13 @@ Script Agent
 - [2026-05-25] Asset structure consolidated — single final-assets location per topic, removed duplicate assets
 - [2026-05-25] StatisticScene implemented — second reusable production primitive following HookScene standards
 - [2026-05-25] Design system extended — sceneStandards constants added to tasanMediaStyle.ts for future scene generation
+- [2026-08-16] Scene standards refactor — HookScene + StatisticScene now driven by per-scene-type `sceneStandards` entries instead of hardcoded values; deprecated StatScene/TextOverlay MVP removed
+- [2026-08-16] Scene 1 Opening-Hook production plan finalized — 5-shot list, stock-only, voice-first, full-audio-in-Remotion decisions locked (`Scene01-Opening-Production-Plan.md`)
+- [2026-08-16/17] Scene 1 B-roll sourced, verified, and locked — all 5 shots in `final-assets/`, documented in `ASSET-MANIFEST.md`; one clip (Shot 5) re-sourced after failing European-context verification
+- [2026-08-16] Asset-sourcing lessons documented in `ASSET-SOURCING-STRATEGY.md` for reuse by future automated sourcing agents
+- [2026-08-19] PROJECT_STATUS.md refreshed after a 3-month documentation gap (last prior update 2026-05-25) to match actual repo/git state
+- [2026-08-19] Voice provider comparison completed and decided — ElevenLabs chosen (provisional) for the channel's German documentary narration
+- [2026-08-19] Voice candidate-comparison workflow defined — test text, identical settings, selection criteria — documented in `content/voice/2026-08-19/scene1-voice-comparison-plan.md`; actual 4-candidate selection handed to the human, in progress
 
 ---
 
@@ -102,6 +116,12 @@ Script Agent
 | Remotion replaces manual Canva workflow (2026-05-19) | Code-driven scene rendering eliminates manual slide design; enables full automation and consistent design system enforcement |
 | Two-stage agent pipeline unified into one (2026-05-21) | Scene Production Agent + Remotion Scene Agent merged into Remotion Generation Agent. Faster, simpler, fewer context boundaries. Single agent reads script → outputs code + style guide + asset prompts. |
 | Reusable component library (2026-05-21) | TextOverlay, BackgroundImage, SoftGradientOverlay, FadeIn, SlideUp are shared. New scene types compose from these — no code duplication. |
+| Per-scene-type standards over hardcoded values (2026-08-16) | HookScene/StatisticScene read from dedicated `sceneStandards` entries so SCENE-STANDARDS.md documentation and actual rendered output can't drift apart. |
+| Stock-only B-roll for the first video (2026-08-16) | No self-filming capability/workflow exists yet; stock (Pexels/Pixabay/equivalent) keeps the first video unblocked. Self-filmed B-roll is a later capability, not a blocker now. |
+| Voice-first timing, mandatory going forward (2026-08-16, reaffirmed 2026-08-19) | Visual cuts are derived from actual recorded VO timestamps, not the reverse. Applies to Scene 1 and all future scenes. Audio bed (ambience/score/SFX) is sourced only *after* VO exists and shot boundaries are set from it — never before. |
+| Full audio pipeline inside Remotion, not CapCut (2026-08-16) | VO + ambience + score + SFX are layered as `<Audio>` tracks with volume envelopes directly in Remotion compositions. Scene 1 (`HookSequence.tsx`) is the pilot that must prove this works end-to-end before it's assumed for the rest of the video. |
+| CapCut demoted from required to optional/fallback (2026-08-16) | If full-Remotion audio assembly is validated by the Scene 1 pilot, CapCut is no longer a necessary pipeline step. `video/README.md`'s CapCut-based description is intentionally left unrevised until the pilot proves out — documenting an unvalidated process would be premature. |
+| Per-candidate visual verification, not per-series/per-uploader trust (2026-08-16/17) | Asset sourcing surfaced two failure modes worth codifying: (1) a stock uploader's whole catalog can carry one unwanted regional/stylistic signature — a backup clip from the same uploader is not independent verification; (2) "matched pair, same uploader" ≠ "matched pair, same physical setup" (handheld vs. desk-mounted needs its own check). Every candidate gets frame-checked individually; license/series metadata is not sufficient. Documented in `ASSET-SOURCING-STRATEGY.md` for reuse by future automated sourcing agents. |
 
 ---
 
@@ -116,11 +136,16 @@ Script Agent
 | Canva production guide | `content/scenes/2026-05-12/canva-production-guide.md` | **Complete — ready for production** |
 | Visual style guide | `video/public/assets/2026-05-12/ki-risiken-kinder/visual-style-guide.md` | **Complete (2026-05-21)** |
 | Asset prompts | `video/public/assets/2026-05-12/ki-risiken-kinder/asset-prompts.md` | **Complete (2026-05-21)** |
-| Scene 1 (HookScene) | `video/src/scenes/HookScene.tsx` + standards | **Production quality (2026-05-25)** — Refined typography, composition, motion |
-| Scene 4 (StatisticScene) | `video/src/scenes/StatisticScene.tsx` + standards | **Production quality (2026-05-25)** — Second reusable primitive |
-| Scene standards | `video/src/scenes/SCENE-STANDARDS.md` | **Complete (2026-05-25)** — Documented patterns for future scenes |
-| Scene 1 asset (hallway) | `video/public/assets/2026-05-12/ki-risiken-kinder/final-assets/scene-01-hallway.png` | **Awaiting human sourcing** |
-| Voice script | `content/voice/2026-05-12/` | Not yet run |
+| Scene 1 (HookScene) | `video/src/scenes/HookScene.tsx` + standards | **Production quality (2026-05-25), refactored to per-scene-type standards (2026-08-16)** |
+| Scene 4 (StatisticScene) | `video/src/scenes/StatisticScene.tsx` + standards | **Production quality (2026-05-25), refactored to per-scene-type standards (2026-08-16)** |
+| Scene standards | `video/src/scenes/SCENE-STANDARDS.md` | **Complete (2026-05-25), split per scene type (2026-08-16)** |
+| Scene 1 Opening-Hook production plan | `video/src/scenes/Scene01-Opening-Production-Plan.md` | **Complete (2026-08-16)** — 5-shot list, timing/audio/component plan, quality bar |
+| Scene 1 B-roll (5 shots) | `video/public/assets/2026-05-12/ki-risiken-kinder/final-assets/` | **Sourced, verified, and locked (2026-08-17)** — see `ASSET-MANIFEST.md` |
+| Asset sourcing strategy notes | `video/public/assets/2026-05-12/ki-risiken-kinder/ASSET-SOURCING-STRATEGY.md` | **Complete (2026-08-17)** |
+| Voice provider decision | `content/voice/2026-08-19/scene1-voice-comparison-plan.md` | **Provider decided (2026-08-19): ElevenLabs, provisional** |
+| Channel voice (specific voice) | `content/voice/2026-08-19/scene1-voice-comparison-plan.md` (candidate table) | **Not yet selected — human is choosing 4 candidates in ElevenLabs Voice Library, current next step** |
+| Voice-over (Scene 1, ~40s Hook) | `content/voice/2026-05-12/` | Not yet recorded — blocked on voice selection |
+| `HookSequence.tsx` (Scene 1 orchestrator + audio) | `video/src/scenes/` | Not yet built — blocked on VO timestamps |
 | Final video | — | Not yet produced |
 
 ---
@@ -163,7 +188,7 @@ templates/       Reusable prompt fragments (future)
 
 ---
 
-## Next Steps (Priority: Asset Sourcing → Full Video Production)
+## Next Steps (Priority: Scene 1 Pilot → Remaining Scenes → Full Video Production)
 
 ### Phase A — Remotion MVP & Core Infrastructure (✅ Complete)
 **Status: 100% complete**
@@ -180,39 +205,38 @@ templates/       Reusable prompt fragments (future)
 - ✅ Consolidate asset structure — single final-assets location (2026-05-25)
 - ✅ Document scene standards — SCENE-STANDARDS.md for future reuse (2026-05-25)
 - ✅ **Establish reusable primitives** — HookScene + StatisticScene as proven patterns (2026-05-25)
+- ✅ Refactor scenes onto per-scene-type `sceneStandards`, remove deprecated StatScene MVP (2026-08-16)
 
-### Phase B — Remaining Scene Primitives (Next)
+### Phase B — Scene 1 Opening-Hook Pilot (In Progress — current focus)
+Full-pipeline pilot proving voice-first timing + all-audio-in-Remotion before it's applied elsewhere. See `video/src/scenes/Scene01-Opening-Production-Plan.md` for the authoritative step list.
+
+- ✅ Lock the 5-shot plan (2026-08-16)
+- ✅ Select and lock all 5 B-roll assets, stock-only (2026-08-16/17)
+- ✅ Decide voice provider — ElevenLabs, provisional (2026-08-19)
+- ➡️ **Select the specific channel voice from 4 ElevenLabs candidates — current next step, human task in progress** (process + test text + settings in `content/voice/2026-08-19/scene1-voice-comparison-plan.md`)
+- ⬜ Record final VO for the full 40s Hook text (deliberate pauses, "Chatbot" sync point)
+- ⬜ Extract exact VO timestamps → build the frame-offset table
+- ⬜ Source the audio bed (ambience, score, SFX) — **only after** VO timestamps exist, matched to the actual voice
+- ⬜ Build `HookSequence.tsx` (orchestrator + `TypingIndicator`, `FocusShift`, `BackgroundImage` focus-point extension)
+- ⬜ Layer `<Audio>` tracks with volume envelopes, render, iterate against the quality bar in the production plan
+- ⬜ Lock and document as `HookSequence.standards.md`; fold learnings into `SCENE-STANDARDS.md` and update `video/README.md`'s pipeline description
+
+### Phase C — Remaining Scene Primitives (starts after Scene 1 pilot is locked, not before)
 Implement remaining reusable scene types following documented standards (SCENE-STANDARDS.md):
 - **QuoteScene** — Full-screen quote with speaker/source attribution
 - **InsightScene** — Headline + explanatory text
 - **ActionScene** — Call-to-action with visual context
 - **EndingScene** — Closing hook with channel branding
-Each follows HookScene + StatisticScene patterns: typography, composition, motion, overlays.
+Each follows HookScene + StatisticScene patterns: typography, composition, motion, overlays; each also adopts the voice-first / audio-in-Remotion pattern once Scene 1 proves it out.
 
-### Phase C — Asset Sourcing & Scene Rendering
-1. **Human sources all scene assets** (per asset-prompts.md)
-   - Scene 1 (hallway), Scene 2 (montage), etc.
-   - Place in `video/public/assets/2026-05-12/ki-risiken-kinder/final-assets/`
-2. **Render all scene components**
-   - HookScene, StatisticScene, and remaining scenes
-   - Generate MP4 clips to `renders/2026-05-12/ki-risiken-kinder/`
-
-### Phase D — Voice Preparation
-1. **Run Voice Prep Agent** on the script
-   - Generate ElevenLabs narration with markers
-   - Alternative: Human records voiceover
-2. **Prepare voice file(s)** for CapCut assembly
+### Phase D — Full-Video Asset Sourcing & Rendering
+1. Source remaining scene assets (per asset-prompts.md), applying the per-candidate verification lessons from Scene 1 (`ASSET-SOURCING-STRATEGY.md`)
+2. Render all scene components to `renders/2026-05-12/ki-risiken-kinder/`
 
 ### Phase E — Final Assembly & Export
-1. **Assemble in CapCut**
-   - Import rendered scene MP4s in order
-   - Layer voice narration
-   - Add B-roll (per asset-prompts.md if needed)
-   - Add music/ambient sound
-   - Export final 1920×1080, 30 FPS H.264 MP4
-2. **Upload to YouTube**
-   - Verify timing, audio sync, visual quality
-   - Add description, tags, chapters (from script)
+1. If the Scene 1 pilot validates full-Remotion audio: render the complete video directly, no CapCut step required.
+2. If it doesn't fully validate: fall back to CapCut assembly (voice + B-roll + music) as originally planned.
+3. Export final 1920×1080, 30 FPS H.264 MP4; upload to YouTube with description, tags, chapters (from script).
 
 ### Phase F — Iteration & Next Topics
 1. Document lessons learned from first complete video
@@ -228,3 +252,7 @@ Each follows HookScene + StatisticScene patterns: typography, composition, motio
 - KJM-Vorsitzender name: not confirmed — verify before using the KJM quote in video
 - Scene Production Agent: first run ever — expect the output format to need iteration
 - Voice Prep Agent: ElevenLabs SSML support varies by plan — verify before using SSML markers
+- **Specific channel voice not yet selected — provider (ElevenLabs) is decided, but the current blocking step is the human choosing among 4 candidates** (2026-08-19)
+- Score source for Scene 1 not yet confirmed: Pixabay Music / YouTube Audio Library assumed acceptable, but no existing licensed-music tool for the channel is documented — confirm only after VO exists, per the voice-first ordering (do not source audio bed before voice/VO)
+- `video/README.md`'s CapCut-based workflow section is now out of date with the full-Remotion-audio decision — intentionally left unrevised until the Scene 1 pilot validates the approach end-to-end
+- Whether CapCut is dropped entirely or kept as a fallback depends on the Scene 1 pilot's outcome (see Phase E) — not yet decided
