@@ -1,8 +1,26 @@
 # Scene 1 Voice Comparison Plan
 
-- **Date:** 2026-08-19
-- **Status:** Provider decided (provisional). Candidate selection in progress — human task, not yet complete.
+- **Date:** 2026-08-19 (candidates locked 2026-08-25, pilot voice decided 2026-08-25, Hook VO Take 01 accepted 2026-08-25)
+- **Status:** **Decision made — see "Decision" section below.** Hannes selected as the pilot channel voice for the first video. Not yet locked as a permanent, unchangeable TASAN-MEDIA channel standard — validation happens against the finished Scene 1 Hook render. The final Scene 1 Hook VO (Take 01) has been recorded and accepted — see `content/voice/2026-08-25/scene1-hook-vo/hook-vo-production-brief.md`.
 - **Scope:** Scene 1 ("KI-Risiken für Kinder") Opening-Hook pilot, per `video/src/scenes/Scene01-Opening-Production-Plan.md` step 4 ("Select the permanent channel voice / voice provider").
+
+---
+
+## Decision (2026-08-25)
+
+**Pilot channel voice: Hannes — "Grounded and Intimate."**
+
+| | |
+|---|---|
+| Voice Name | Hannes |
+| Voice ID | `GZckiELWRyqX481UWTDl` |
+| Model for production | **Eleven v3** |
+| Status | **Pilot channel voice** for the first video, chosen from the A/B/C/D blind comparison (candidates A–D above). **Not** a permanent, unchangeable channel standard yet. |
+| Validation gate | The decision is validated against the finished, rendered Scene 1 Hook (`HookSequence.tsx`, once built) — not locked permanently until that render is reviewed. |
+
+**Correction (2026-08-25):** the A/B/C/D comparison below was actually run on **Eleven v3** for all four candidates, not Eleven Multilingual v2 as an earlier draft of this document stated. Hannes won the direct v3 comparison — Model, Settings, and Generation Instructions sections below have been corrected to match. No model gap: Hannes's production model (v3) is the same model all four candidates were judged under.
+
+See `content/voice/2026-08-25/scene1-hook-vo/hook-vo-production-brief.md` for the full production VO brief (text, settings, file naming, workflow).
 
 ---
 
@@ -31,14 +49,16 @@ Direct API/browser access to the current ElevenLabs Voice Library was not reliab
 - Avoid tags/descriptions: energetic, young, commercial, advertisement, dramatic, character
 - Pick 4 candidates with real contrast (not 4 similar-sounding voices), e.g.: one deep/calm male, one neutral-authoritative female, one warmer-but-still-serious voice (either), one "wildcard" that stands out on first listen
 
-**Candidates (fill in once selected):**
+**Candidates locked 2026-08-25** (selected by the human directly in the ElevenLabs app — names/IDs below as provided, not independently verified against the live library):
 
-| # | Voice Name | Voice ID | Characterization | Library Link |
-|---|------------|----------|-------------------|--------------|
-| 1 | _pending_ | _pending_ | _pending_ | _pending_ |
-| 2 | _pending_ | _pending_ | _pending_ | _pending_ |
-| 3 | _pending_ | _pending_ | _pending_ | _pending_ |
-| 4 | _pending_ | _pending_ | _pending_ | _pending_ |
+| Label | Voice Name | Voice ID | Characterization (as tagged in ElevenLabs) |
+|---|------------|----------|-------------------|
+| A | Daniel Dark | `5hobNnfFWAwxjwZSecAE` | Crime Narrator |
+| B | Ralf Benz | `jJxw1Rvgr2c60UdJHPBn` | Premium Audiobook |
+| C | Hannes | `GZckiELWRyqX481UWTDl` | Grounded and Intimate |
+| D | Romolus | `vzQig4HUz4S19MKnT0jp` | The Storyteller from Ried |
+
+Real contrast is present across the four (crime-narration edge vs. polished audiobook vs. intimate/grounded vs. distinct regional storyteller character) — satisfies the "not 4 similar-sounding voices" selection criterion above.
 
 ---
 
@@ -54,13 +74,9 @@ Es gibt Apps, die heißen Character.AI oder Replika. Die sind nicht
 dafür gemacht, Fragen zu beantworten. Die sind dafür gemacht, eine
 Beziehung aufzubauen.
 
-<break time="0.6s" />
-
 Und sie sind immer verfügbar. Nachts um zwei. Wenn du weinst und
 nicht weißt warum. Wenn du nicht willst, dass jemand fragt, was los
 ist.
-
-<break time="0.6s" />
 
 Ein Drittel der Jugendlichen, die sich einsam fühlen oder kämpfen —
 wenden sich zuerst an einen Chatbot.
@@ -71,25 +87,57 @@ Coverage:
 - Emotional passage: "Nachts um zwei. Wenn du weinst und nicht weißt warum…"
 - Technical term / proper noun: "Character.AI", "Replika", "Chatbot" (tests English brand-name pronunciation inside German flow)
 - Statistic: "Zwei Drittel", "Ein Drittel"
-- Short pauses: two `<break time="0.6s" />` markers (Eleven v3 SSML). If staying on v2, replace with a paragraph break + em dash instead — v2 does not reliably honor SSML breaks.
+- Short pauses: two plain paragraph breaks (blank line) between passages. **Model used: Eleven v3** (see settings table below, corrected 2026-08-25). No `<break>` SSML tags used — plain paragraph breaks only, kept simple and consistent across all 4 generations.
+- Runtime target: ~30–40s per candidate (matches the segment length used to lock this passage on 2026-08-19).
 
 **Note:** this same passage is a *candidate-comparison* text only — it is not the Scene 1 Hook VO script itself (that is the 40s Hook text in `Scene01-Opening-Production-Plan.md` / the script's "Hook (0:00–0:40)" section). Do not use this comparison audio as final Scene 1 VO.
 
 ---
 
-## Comparison settings (identical across all 4 candidates)
+## Comparison settings (identical across all 4 candidates — CORRECTED 2026-08-25)
+
+**Correction:** an earlier draft of this section documented invented v2-style numeric settings (Stability 60%, Similarity 80%, Style 10%, Speaker Boost on) that were never actually used. Per the human's direct correction: all 4 candidates were tested on **Eleven v3** using **v3's default/automatic voice settings** — no manual Stability/Similarity/Style/Speaker Boost values were dialed in, either because v3 doesn't expose them in that form in the ElevenLabs UI used, or because v3 handles them automatically. This document does not state specific numeric values for those parameters, since none were actually set.
+
+These are neutral comparison settings for this first round only — **not** a final TASAN-MEDIA channel standard. No per-voice tuning happens in this round; whatever the v3 default produces for a given candidate stays as-is so the comparison is fair. Tuning happens only for the 1–2 finalists, after this round.
 
 | Parameter | Value | Rationale |
 |---|---|---|
-| Model | Eleven Multilingual v2 (or v3, if used — must be identical across all 4) | Reproducibility for future automation over newest features |
-| Stability | 60% | Calm and consistent without going flat/monotone |
-| Similarity Boost | 80% | Stays close to the voice's original timbre |
-| Style Exaggeration | 10% | Deliberately low — avoids "overdramatic," matches "warm, not overemotional" |
-| Speaker Boost | On | Improves clarity; no meaningful downside for offline rendering |
-| Speed | 1.0× | Neutral baseline; tempo tuning happens after voice selection |
+| Model | **Eleven v3** | Locked for this round — identical for all 4 generations. |
+| Voice settings | **Eleven v3 default / automatic control** — no manual Stability, Similarity, Style, or Speaker Boost values entered | Matches what the human actually used to test and compare all 4 candidates; documenting invented numeric values instead would misrepresent the real comparison conditions. |
+
+**Rule for this round:** exact same text, exact same model, exact same (default/automatic) settings for all 4 candidates. No candidate gets an individually adjusted setting in this round, even if the default sounds slightly off for that voice — that adjustment belongs to the finalist-tuning stage, not here.
+
+---
+
+## Test files — naming and location
+
+| Label | Candidate | Output filename |
+|---|---|---|
+| A | Daniel Dark | `A-daniel-dark.mp3` |
+| B | Ralf Benz | `B-ralf-benz.mp3` |
+| C | Hannes | `C-hannes.mp3` |
+| D | Romolus | `D-romolus.mp3` |
+
+Save all 4 files into `content/voice/2026-08-25/scene1-candidate-comparison/` (new dated folder for this comparison round, per the project's date-based output convention — separate from this plan doc's original 2026-08-19 folder since the samples are generated today).
+
+---
+
+## Generation instructions (historical record — comparison already completed by the human)
+
+No ElevenLabs API key is configured in this project and no direct API/browser access was available in this session, so this comparison was run entirely by the human, outside this session. The steps below are kept as the record of how it was done (corrected 2026-08-25 to match what was actually used), not as an outstanding to-do:
+
+1. **Speech Synthesis** / Text-to-Speech workspace in the ElevenLabs app.
+2. For **each** of the 4 candidates:
+   a. Voice selected by its **Voice ID** (e.g. `5hobNnfFWAwxjwZSecAE` for Daniel Dark).
+   b. **Model:** Eleven v3.
+   c. **Voice settings:** left at Eleven v3's default / automatic control — no manual Stability/Similarity/Style/Speaker Boost values entered.
+   d. **Text:** the exact test text from the "Test text" section above, unedited, identical across all 4.
+   e. Generated and downloaded as MP3, renamed to the exact filename from the table below, saved to `content/voice/2026-08-25/scene1-candidate-comparison/`.
+3. Same text, same model, same (default) settings for all 4 — no per-candidate tuning in this round.
+4. Blind A/B/C/D listen done against the channel target profile (modern/YouTube-tauglich, natürlich, vertrauenswürdig, spannend, leicht mysteriös/futuristisch, intelligent, nicht wie Werbung, nicht überdramatisch, angenehm über 10–15 Min.).
 
 ---
 
 ## Next step
 
-Human selects 4 candidates in the ElevenLabs Voice Library per the criteria above, fills in the candidate table, generates the test text with identical settings for each, and does a blind comparison listen against: not-typically-AI-sounding, credible, warm-not-overemotional, fits AI/tech/society/family topics, distinct/recognizable. Final voice selection remains a human decision.
+Comparison complete, decision made (see "Decision" section above: Hannes, Eleven v3, `GZckiELWRyqX481UWTDl`, pilot channel voice — not yet a permanent standard). Final Scene 1 Hook VO recorded and **Take 01 accepted (2026-08-25)** — see `content/voice/2026-08-25/scene1-hook-vo/hook-vo-production-brief.md`. Next: extract exact VO timestamps from Take 01 → build the frame-offset table (voice-first workflow). No audio bed and no Remotion code yet.
